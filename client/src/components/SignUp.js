@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { register } from "../js/actions/action";
+import { register } from "../js/actions/authActions";
 import "../scss/signin.scss";
 
 class SignUp extends React.Component {

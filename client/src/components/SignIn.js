@@ -12,7 +12,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { login } from "../js/actions/action";
+import { login } from "../js/actions/authActions";
 import "../css/signin.css";
 
 class SignIn extends React.Component {
@@ -28,7 +28,6 @@ class SignIn extends React.Component {
   login = (e) => {
     e.preventDefault();
     this.props.login(this.state);
-    // if (localStorage.getItem("token")) this.props.history.push("/");
   };
   handleClickShowPassword = () => {
     this.setState({ showPassword: !this.state.showPassword });
@@ -41,7 +40,7 @@ class SignIn extends React.Component {
     const { isLoading } = this.props;
     return isLoading ? (
       <CircularProgress />
-    ) : localStorage.getItem("token") != null ? (
+    ) : localStorage.getItem("token") ? (
       <Redirect to="/" />
     ) : (
       <FormControl
@@ -93,11 +92,11 @@ class SignIn extends React.Component {
           labelWidth={70}
         />
         <p className="forgot-pass">Forgot password?</p>
-        <Link to="/">
-          <button type="button" className="submit" onClick={this.login}>
-            Sign In
-          </button>
-        </Link>
+        {/* <Link to="/"> */}
+        <button type="button" className="submit" onClick={this.login}>
+          Sign In
+        </button>
+        {/* </Link> */}
         <div className="sub-container">
           <div className="img">
             <div className="img__text m--up">
@@ -114,4 +113,8 @@ class SignIn extends React.Component {
   }
 }
 
-export default connect(null, { login })(SignIn);
+const mapStateToProps = (state) => ({
+  isLoading: state.authReducer.isLoading,
+});
+
+export default connect(mapStateToProps, { login })(SignIn);

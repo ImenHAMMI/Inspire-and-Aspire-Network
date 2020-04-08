@@ -5,7 +5,7 @@ import { Link, Redirect } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Avatar from "@material-ui/core/Avatar";
 
-import { isAuthorized } from "../js/actions/action";
+import { isAuthorized } from "../js/actions/authActions";
 import "../css/home.css";
 
 class Home extends React.Component {
@@ -21,6 +21,8 @@ class Home extends React.Component {
     const { isLoading, isAuth, profile } = this.props;
     return isLoading ? (
       <CircularProgress />
+    ) : !isAuth ? (
+      <Redirect to="/login" />
     ) : (
       <div>
         <Link to="/profile">
@@ -35,6 +37,7 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  isLoading: state.authReducer.isLoading,
   isAuth: state.authReducer.isAuth,
   profile: state.authReducer.profile,
 });

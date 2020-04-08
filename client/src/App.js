@@ -8,19 +8,39 @@ import Home from "./components/Home";
 
 import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/register" component={SignUp} />
-          <Route exact path="/login" component={SignIn} />
-          <Route exact path="/" component={Home} />
-          <Route exact path="/profile" component={Profile} />
-        </Switch>
-      </BrowserRouter>
-    </div>
-  );
-}
+class App extends React.Component {
+  state = {
+    open: false,
+  };
 
+  handleOpen = () => {
+    this.setState({
+      open: !this.state.open,
+    });
+  };
+  render() {
+    return (
+      <div className="App">
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/register" component={SignUp} />
+            <Route exact path="/login" component={SignIn} />
+            <Route exact path="/" component={Home} />
+            <Route
+              exact
+              path="/profile"
+              render={(props) => (
+                <Profile
+                  {...props}
+                  open={this.state.open}
+                  handleOpen={this.handleOpen}
+                />
+              )}
+            />
+          </Switch>
+        </BrowserRouter>
+      </div>
+    );
+  }
+}
 export default App;

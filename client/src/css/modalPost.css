@@ -1,0 +1,66 @@
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.modalPaper {
+  background-color: rgba(255, 255, 255, 0.822);
+  padding: 5%;
+  border-radius: 5px;
+}
+.btn-add {
+  cursor: pointer;
+  margin-top: 7%;
+  background-color: hsla(0, 1%, 53%, 0.37);
+  width: 100px;
+  height: 45px;
+  border-radius: 5px;
+  align-self: center;
+  position: relative;
+  border: 1px solid rgb(19, 19, 19);
+}
+.IconAction {
+  border-radius: 30px;
+  cursor: pointer;
+  position: absolute;
+  margin-top: 3%;
+  margin-left: 40%;
+  margin-bottom: 2%;
+  box-shadow: 0 5px 10px 0 #afafae;
+  padding: 2px;
+}
+.IconAction:hover {
+  box-shadow: 0 5px 10px 0 #d3cfc9;
+}
+.btn-add .Icon {
+  position: absolute;
+  top: 7px;
+  left: 15px;
+}
+.btn-add span {
+  position: absolute;
+  top: 6px;
+  left: 42px;
+}
+form {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+input {
+  border-radius: 5px;
+  margin-left: 4%;
+  padding: 2% 0;
+  width: 90%;
+  height: 25px;
+  outline: none;
+  background: hsla(0, 0%, 100%, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
+  font-family: cursive;
+}
+
+.RowForm {
+  display: flex;
+  padding: 2%;
+}

@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const config = require("config");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Post = require("../models/Post");
 
 const secretOrKey = config.get("secretOrKey");
 
@@ -63,13 +64,19 @@ module.exports = userController = {
       res.status(500).json({ msg: err });
     }
   },
-  current: (req, res) => {
+  current: async (req, res) => {
     const { id, name, email } = req.user;
-    // res.json(req.user);
-    res.json({
-      id,
-      name,
-      email,
-    });
+    try {
+      const searchRes = await Post.find({ postedBy: id });
+      if (searchRes)
+        return res.status(201).json({
+          id,
+          name,
+          email,
+          posts: searchRes,
+        });
+    } catch (err) {
+      res.status(500).json({ errors: err });
+    }
   },
 };

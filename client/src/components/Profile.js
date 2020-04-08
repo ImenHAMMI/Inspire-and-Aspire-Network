@@ -1,28 +1,35 @@
 import React from "react";
 import { connect } from "react-redux";
-// import { Redirect } from "react-router-dom";
-import { isAuthorized } from "../js/actions/action";
+import { Redirect } from "react-router-dom";
+
 import Avatar from "@material-ui/core/Avatar";
+import { CircularProgress } from "@material-ui/core";
+
+import { isAuthorized } from "../js/actions/authActions";
+
+import Post from "./Post";
+import ModalPost from "./ModalPost";
 
 class Profile extends React.Component {
-  // componentDidMount() {
-  //   this.props.isAuthorized();
-  // }
+  componentDidMount() {
+    this.props.isAuthorized();
+  }
   render() {
-    const { profile } = this.props;
-    return (
-      // !isAuth ? (
-      //   <Redirect to="/login" />
-      // ) : (
+    const { isLoading, isAuth, profile } = this.props;
+    // const { name, avatar, posts } = this.props.profile;
+    console.log(this.props);
+    return isLoading ? (
+      <CircularProgress />
+    ) : (
       <div>
-        {profile ? (
-          <div>
-            <Avatar alt={profile.name} src={profile.avatar} className="Avatar">
-              {profile.name}
-            </Avatar>
-            {profile.name}
-          </div>
-        ) : null}
+        <Avatar alt={profile.name} src={profile.avatar} className="Avatar">
+          {profile.name}
+        </Avatar>
+        {profile.name}
+        {profile.posts.map((post, key) => (
+          <Post key={key} post={post} name={profile.name} />
+        ))}
+        <ModalPost open={this.props.open} handleOpen={this.props.handleOpen} />
       </div>
     );
   }
@@ -31,5 +38,7 @@ class Profile extends React.Component {
 const mapStateToProps = (state) => ({
   isAuth: state.authReducer.isAuth,
   profile: state.authReducer.profile,
+  isLoading: state.postReducer.isLoading,
+  // posts: state.postReducer.posts,
 });
 export default connect(mapStateToProps, { isAuthorized })(Profile);
