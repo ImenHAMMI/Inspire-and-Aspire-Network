@@ -9,7 +9,7 @@ import {
 } from "../constants/action-types";
 
 //get Posts By User
-export const getPostsByUser = () => async (dispatch) => {
+export const getPosts = () => async (dispatch) => {
   dispatch({
     type: GET_POSTS,
   });

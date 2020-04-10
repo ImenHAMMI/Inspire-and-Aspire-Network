@@ -64,11 +64,11 @@ const Post = (props) => {
         title={name}
         subheader={date}
       />
-      <CardMedia
+      {/* <CardMedia
         className="media"
         image="/static/images/cards/paella.jpg"
         title="Paella dish"
-      />
+      /> */}
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {text}

@@ -13,6 +13,21 @@ export const AUTH_USER = "AUTH_USER";
 export const AUTH_SUCCESS = "AUTH_SUCCESS";
 export const AUTH_FAIL = "AUTH_FAIL";
 
+//Get Users
+export const GET_USERS = "GET_USERS";
+export const GETUSERS_SUCCESS = "GETUSERS_SUCCESS";
+export const GETUSERS_FAIL = "GETUSERS_FAIL";
+
+//Get Profile
+export const GET_PROFILE = "GET_PROFILE";
+export const GETPROFILE_SUCCESS = "GETPROFILE_SUCCESS";
+export const GETPROFILE_FAIL = "GETPROFILE_FAIL";
+
+//Follow
+export const FOLLOW = "FOLLOW";
+export const FOLLOW_SUCCESS = "FOLLOW_SUCCESS";
+export const FOLLOW_FAIL = "FOLLOW_FAIL";
+
 //Get Posts
 export const GET_POSTS = "GET_POSTS";
 export const GETPOSTS_SUCCESS = "GETPOSTS_SUCCESS";

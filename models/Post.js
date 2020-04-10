@@ -14,6 +14,15 @@ const postSchema = new Schema({
 
   avatar: String,
 
+  // likes: [
+  //   {
+  //     user: {
+  //       type: Schema.Types.ObjectId,
+  //       ref: "User",
+  //     },
+  //   },
+  // ],
+
   date: {
     type: Date,
     default: Date.now,

@@ -5,29 +5,48 @@ import { Redirect } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import { CircularProgress } from "@material-ui/core";
 
-import { isAuthorized } from "../js/actions/authActions";
+import {
+  isAuthorized,
+  getProfileByID,
+  follow,
+} from "../js/actions/authActions";
 
 import Post from "./Post";
 import ModalPost from "./ModalPost";
 
 class Profile extends React.Component {
-  componentDidMount() {
+  componentWillMount() {
+    const id = this.props.match.params.id;
+    this.props.getProfileByID(id);
     this.props.isAuthorized();
   }
+  addFollow = (e) => {
+    e.preventDefault();
+    this.props.follow(this.props.profileUser.id);
+  };
   render() {
-    const { isLoading, isAuth, profile } = this.props;
-    // const { name, avatar, posts } = this.props.profile;
-    console.log(this.props);
+    const { isAuth, isLoading, profile, profileUser } = this.props;
+
+    // console.log(this.props);
     return isLoading ? (
+      <CircularProgress />
+    ) : !isAuth ? (
       <CircularProgress />
     ) : (
       <div>
-        <Avatar alt={profile.name} src={profile.avatar} className="Avatar">
-          {profile.name}
+        <Avatar
+          alt={profileUser.name}
+          src={profileUser.avatar}
+          className="Avatar"
+        >
+          {profileUser.name}
         </Avatar>
-        {profile.name}
-        {profile.posts.map((post, key) => (
-          <Post key={key} post={post} name={profile.name} />
+        {profileUser.name}
+        {profile.id !== profileUser.id ? (
+          <button onClick={this.addFollow}>follow</button>
+        ) : null}
+        {profileUser.posts.map((post, key) => (
+          <Post key={key} post={post} name={profileUser.name} />
         ))}
         <ModalPost open={this.props.open} handleOpen={this.props.handleOpen} />
       </div>
@@ -38,7 +57,11 @@ class Profile extends React.Component {
 const mapStateToProps = (state) => ({
   isAuth: state.authReducer.isAuth,
   profile: state.authReducer.profile,
-  isLoading: state.postReducer.isLoading,
-  // posts: state.postReducer.posts,
+  isLoading: state.authReducer.isLoading,
+  profileUser: state.authReducer.profileUser,
 });
-export default connect(mapStateToProps, { isAuthorized })(Profile);
+export default connect(mapStateToProps, {
+  isAuthorized,
+  getProfileByID,
+  follow,
+})(Profile);

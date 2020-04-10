@@ -11,7 +11,7 @@ import PersonRoundedIcon from "@material-ui/icons/PersonRounded";
 import FaceRoundedIcon from "@material-ui/icons/FaceRounded";
 
 import { addPost } from "../js/actions/postActions";
-
+import { isAuthorized } from "../js/actions/authActions";
 import "../css/modalPost.css";
 
 class ModalPost extends React.Component {
@@ -42,11 +42,13 @@ class ModalPost extends React.Component {
   handleChange = (e) => this.setState({ [e.target.name]: e.target.value });
   onSubmit = () => {
     // const isFilled = this.state.text && this.state.Mobile && this.state.EMail;
-    console.log(this.state);
+    // console.log(this.state);
     // if (isFilled) {
-    this.props.isEdit
-      ? this.props.editContact(this.props.contact._id, this.state)
-      : this.props.addPost(this.state);
+    // this.props.isEdit
+    //   ? this.props.editContact(this.props.contact._id, this.state)
+    //   :
+    this.props.addPost(this.state);
+    this.props.isAuthorized();
     this.props.handleOpen();
     // }
     this.setState({
@@ -147,4 +149,5 @@ class ModalPost extends React.Component {
 
 export default connect(null, {
   addPost,
+  isAuthorized,
 })(ModalPost);

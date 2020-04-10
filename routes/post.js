@@ -7,8 +7,8 @@ const isAuth = require("../middlewares/passport-setup");
 
 // @route   GET api/posts
 // @desc    Get posts
-// @access  Public
-// router.get("/posts", postController.getPostsById);
+// @access  Private
+router.get("/posts", postController.getPosts);
 
 // @route   POST /post
 // @desc    Create post

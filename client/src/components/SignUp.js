@@ -14,7 +14,7 @@ class SignUp extends React.Component {
     name: "",
   };
 
-  changeHandler = (e) =>
+  handleChange = (e) =>
     this.setState({ ...this.state, [e.target.name]: e.target.value });
 
   register = (e) => {
@@ -54,7 +54,7 @@ class SignUp extends React.Component {
             name="name"
             placeholder="Name required"
             defaultValue={this.state.name}
-            onChange={this.changeHandler}
+            onChange={this.handleChange}
           />
         </label>
         <label>
@@ -64,7 +64,7 @@ class SignUp extends React.Component {
             name="email"
             placeholder="E-Mail required"
             defaultValue={this.state.email}
-            onChange={this.changeHandler}
+            onChange={this.handleChange}
           />
         </label>
         <label>
@@ -74,7 +74,7 @@ class SignUp extends React.Component {
             name="password"
             placeholder="Password required"
             defaultValue={this.state.password}
-            onChange={this.changeHandler}
+            onChange={this.handleChange}
           />
         </label>
 

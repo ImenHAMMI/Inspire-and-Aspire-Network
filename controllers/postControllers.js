@@ -5,15 +5,15 @@ const Post = require("../models/Post");
 const secretOrKey = config.get("secretOrKey");
 
 module.exports = postController = {
-  // getPosts: async (req, res) => {
-  //   try {
-  //     const searchRes = await Post.find();
-  //     if (searchRes) return res.status(201).json(searchRes);
-  //     //   .sort({ date: -1 })
-  //   } catch (err) {
-  //     res.status(500).json({ errors: err });
-  //   }
-  // },
+  getPosts: async (req, res) => {
+    try {
+      const searchRes = await Post.find();
+      if (searchRes) return res.status(201).json(searchRes);
+      //   .sort({ date: -1 })
+    } catch (err) {
+      res.status(500).json({ errors: err });
+    }
+  },
   addPost: async (req, res) => {
     const { text, name, avatar } = req.body;
 

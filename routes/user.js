@@ -5,18 +5,34 @@ const userController = require("../controllers/userControllers");
 const isAuth = require("../middlewares/passport-setup");
 const { registerRules, validator } = require("../middlewares/validator");
 
-// @route  GET api/users/register
+// @route  GET user/register
 // @desc   Register user
 // @access Public
 router.post("/register", registerRules(), validator, userController.register);
 
-// @route  GET api/users/login
+// @route  GET user/login
 // @desc   Login user / returning JWT Token
 // @access Public
 router.post("/login", userController.login);
 
-// @route  GET api/users/current
+// @route  GET user/current
 // @desc   Return current user
 //@access  Private
 router.get("/current", isAuth(), userController.current);
+
+// @route  GET user/current
+// @desc   Return all users
+//@access  Private
+router.get("/users", userController.getAllUsers);
+
+// @route  GET user/profile:id
+// @desc   Return profile by id
+//@access  Private
+router.get("/profile:id", userController.getProfileByID);
+
+// @route  GET user/profile:id
+// @desc   Return profile by id
+//@access  Private
+router.put("/profile:id", isAuth(), userController.follow);
+
 module.exports = router;

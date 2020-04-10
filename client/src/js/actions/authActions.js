@@ -9,6 +9,15 @@ import {
   AUTH_USER,
   AUTH_FAIL,
   AUTH_SUCCESS,
+  GET_USERS,
+  GETUSERS_SUCCESS,
+  GETUSERS_FAIL,
+  GET_PROFILE,
+  GETPROFILE_SUCCESS,
+  GETPROFILE_FAIL,
+  FOLLOW,
+  FOLLOW_SUCCESS,
+  FOLLOW_FAIL,
 } from "../constants/action-types";
 
 //REGISTER
@@ -61,5 +70,59 @@ export const isAuthorized = () => async (dispatch) => {
     });
   } catch (error) {
     dispatch({ type: AUTH_FAIL, payload: error.response.data.errors });
+  }
+};
+
+// get All Users
+export const getAllUsers = () => async (dispatch) => {
+  dispatch({
+    type: GET_USERS,
+  });
+  try {
+    const searchRes = await axios.get("/users");
+    dispatch({
+      type: GETUSERS_SUCCESS,
+      payload: searchRes.data,
+    });
+  } catch (error) {
+    dispatch({ type: GETUSERS_FAIL, payload: error.response.data.errors });
+  }
+};
+
+// get Profile By ID
+export const getProfileByID = (id) => async (dispatch) => {
+  dispatch({
+    type: GET_PROFILE,
+  });
+  try {
+    const searchRes = await axios.get(`/profile${id}`);
+    dispatch({
+      type: GETPROFILE_SUCCESS,
+      payload: searchRes.data,
+    });
+  } catch (error) {
+    dispatch({ type: GETPROFILE_FAIL, payload: error.response.data.errors });
+  }
+};
+
+//follow user
+export const follow = (id) => async (dispatch) => {
+  dispatch({
+    type: FOLLOW,
+  });
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+  try {
+    const putRes = await axios.put(`/profile${id}`, null, config);
+    console.log(putRes);
+    dispatch({
+      type: FOLLOW_SUCCESS,
+      payload: putRes.data,
+    });
+  } catch (error) {
+    dispatch({ type: FOLLOW_FAIL, payload: error.response.data.errors });
   }
 };

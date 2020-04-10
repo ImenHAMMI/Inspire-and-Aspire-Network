@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const config = require("config");
 const jwt = require("jsonwebtoken");
+
 const User = require("../models/User");
 const Post = require("../models/Post");
 
@@ -65,7 +66,7 @@ module.exports = userController = {
     }
   },
   current: async (req, res) => {
-    const { id, name, email } = req.user;
+    const { id, name, email, avatar, followers, following } = req.user;
     try {
       const searchRes = await Post.find({ postedBy: id });
       if (searchRes)
@@ -73,8 +74,75 @@ module.exports = userController = {
           id,
           name,
           email,
+          avatar,
+          followers,
+          following,
           posts: searchRes,
         });
+    } catch (err) {
+      res.status(500).json({ errors: err });
+    }
+  },
+  getAllUsers: async (req, res) => {
+    try {
+      const searchRes = await User.find();
+      if (searchRes) return res.status(201).json(searchRes);
+      //   .sort({ date: -1 })
+    } catch (err) {
+      res.status(500).json({ errors: err });
+    }
+  },
+  getProfileByID: async (req, res) => {
+    const { id } = req.params;
+    try {
+      const searchRes = await User.findOne({ _id: id });
+      const searchResPost = await Post.find({ postedBy: id });
+      if (searchRes && searchResPost) {
+        const { _id, name, email, avatar, followers, following } = searchRes;
+        return res.status(201).json({
+          id: _id,
+          name,
+          email,
+          avatar,
+          followers,
+          following,
+          posts: searchResPost,
+        });
+      }
+    } catch (err) {
+      res.status(500).json({ errors: err });
+    }
+  },
+  follow: async (req, res) => {
+    const { id } = req.params;
+    const { _id, following } = req.user;
+    // console.log(req.body);
+    try {
+      // console.log(following);
+      const searchRes = await User.findOne({ _id: id });
+      // console.log(!following.filter((id) => id === searchRes._id));
+      if (searchRes) {
+        if (
+          !following.filter((id) => id === searchRes._id) ||
+          following.length === 0
+        ) {
+          following.push(searchRes);
+          // followers.push(req.body)
+          // console.log(following);
+          // console.log(_id);
+          const updateResfollowing = await User.findOneAndUpdate(
+            { _id },
+            { $set: { following } }
+          );
+          // const updateResfollowers = await User.findOneAndUpdate(
+          //   { _id : req.body.id},
+          //   { $set: { followers } }
+          // );
+          if (updateResfollowing) res.status(201).json({ updateResfollowing });
+          else res.status(500).json({ msg: "error updating data" });
+        } else res.status(500).json({ msg: "following does exist" });
+      }
+      // console.log(updateRes);
     } catch (err) {
       res.status(500).json({ errors: err });
     }
