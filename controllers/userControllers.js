@@ -115,34 +115,53 @@ module.exports = userController = {
   },
   follow: async (req, res) => {
     const { id } = req.params;
-    const { _id, following } = req.user;
-    // console.log(req.body);
+    const { _id, name, email, avatar, followers, following } = req.user;
+
     try {
       // console.log(following);
       const searchRes = await User.findOne({ _id: id });
-      // console.log(!following.filter((id) => id === searchRes._id));
       if (searchRes) {
-        if (
-          !following.filter((id) => id === searchRes._id) ||
-          following.length === 0
-        ) {
+        if (following.indexOf(searchRes._id) < 0) {
           following.push(searchRes);
-          // followers.push(req.body)
-          // console.log(following);
-          // console.log(_id);
-          const updateResfollowing = await User.findOneAndUpdate(
-            { _id },
-            { $set: { following } }
-          );
-          // const updateResfollowers = await User.findOneAndUpdate(
-          //   { _id : req.body.id},
-          //   { $set: { followers } }
-          // );
-          if (updateResfollowing) res.status(201).json({ updateResfollowing });
-          else res.status(500).json({ msg: "error updating data" });
-        } else res.status(500).json({ msg: "following does exist" });
+          searchRes.followers.push(req.user);
+
+          try {
+            const updateResfollowing = await User.findOneAndUpdate(
+              { _id },
+              { $set: { following } },
+              { new: true }
+            );
+            const updateResfollowers = await User.findOneAndUpdate(
+              { _id: id },
+              { $set: { followers: searchRes.followers } },
+              { new: true }
+            );
+            const searchResPost = await Post.find({ postedBy: id });
+            return res.status(200).json([
+              {
+                id: _id,
+                name,
+                email,
+                avatar,
+                followers,
+                following: updateResfollowing.following,
+              },
+              {
+                id,
+                name: updateResfollowers.name,
+                email: updateResfollowers.email,
+                avatar: updateResfollowers.avatar,
+                followers: updateResfollowers.followers,
+                following: updateResfollowers.following,
+                posts: searchResPost,
+              },
+            ]);
+          } catch (error) {
+            // console.log("error :", error);
+            res.status(500).json({ msg: "error updating data" });
+          }
+        } else return res.status(500).json({ msg: "following does exist" });
       }
-      // console.log(updateRes);
     } catch (err) {
       res.status(500).json({ errors: err });
     }

@@ -66,7 +66,12 @@ const authReducer = (state = initialState, { type, payload }) => {
     case FOLLOW_FAIL:
       return { ...state, isLoading: false, errors: payload };
     case FOLLOW_SUCCESS:
-      return { ...state, isLoading: false, profile: payload };
+      return {
+        ...state,
+        isLoading: false,
+        profile: payload[0],
+        profileUser: payload[1],
+      };
     default:
       return state;
   }

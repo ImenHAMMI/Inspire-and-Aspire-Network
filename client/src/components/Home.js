@@ -13,9 +13,10 @@ import "../css/home.css";
 
 class Home extends React.Component {
   componentDidMount() {
-    this.props.isAuthorized();
-    this.props.getPosts();
-    this.props.getAllUsers();
+    if (this.props.isAuthorized()) {
+      this.props.getPosts();
+      this.props.getAllUsers();
+    }
   }
 
   logOut = () => {
@@ -37,7 +38,7 @@ class Home extends React.Component {
         </Link>
         <button onClick={this.logOut}>log out</button>
         {posts.map((post, key) => (
-          <Post key={key} post={post} name={post.name} />
+          <Post key={key} postUser={post} name={post.name} />
         ))}
         {users.map((user, key) =>
           user._id !== profile.id ? (

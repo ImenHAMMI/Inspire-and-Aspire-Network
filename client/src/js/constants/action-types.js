@@ -37,3 +37,18 @@ export const GETPOSTS_FAIL = "GETPOSTS_FAIL";
 export const ADD_POST = "ADD_POST";
 export const ADDPOST_SUCCESS = "ADDPOST_SUCCESS";
 export const ADDPOST_FAIL = "ADDPOST_FAIL";
+
+//Like Post
+export const LIKE = "LIKE";
+export const LIKE_SUCCESS = "LIKE_SUCCESS";
+export const LIKE_FAIL = "LIKE_FAIL";
+
+//UnLike Post
+export const UNLIKE = "UNLIKE";
+export const UNLIKE_SUCCESS = "UNLIKE_SUCCESS";
+export const UNLIKE_FAIL = "UNLIKE_FAIL";
+
+//getAvatarsLike
+export const GETAVATARSLIKES = "GETAVATARSLIKES";
+export const GETAVATARSLIKES_SUCCESS = "GETAVATARSLIKES_SUCCESS";
+export const GETAVATARSLIKES_FAIL = "GETAVATARSLIKES_FAIL";

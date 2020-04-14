@@ -6,6 +6,15 @@ import {
   ADD_POST,
   ADDPOST_SUCCESS,
   ADDPOST_FAIL,
+  LIKE,
+  LIKE_SUCCESS,
+  LIKE_FAIL,
+  UNLIKE,
+  UNLIKE_SUCCESS,
+  UNLIKE_FAIL,
+  GETAVATARSLIKES,
+  GETAVATARSLIKES_SUCCESS,
+  GETAVATARSLIKES_FAIL,
 } from "../constants/action-types";
 
 //get Posts By User
@@ -44,5 +53,70 @@ export const addPost = (post) => async (dispatch) => {
     });
   } catch (error) {
     dispatch({ type: ADDPOST_FAIL, payload: error.response.data.errors });
+  }
+};
+
+//Like post
+export const likePost = (id) => async (dispatch) => {
+  dispatch({
+    type: LIKE,
+  });
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+  try {
+    const putRes = await axios.put(`/likePost${id}`, null, config);
+    console.log(putRes);
+    dispatch({
+      type: LIKE_SUCCESS,
+      payload: putRes.data,
+    });
+  } catch (error) {
+    dispatch({ type: LIKE_FAIL, payload: error.response.data.errors });
+  }
+};
+
+//Like post
+export const unLikePost = (id) => async (dispatch) => {
+  dispatch({
+    type: UNLIKE,
+  });
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+  try {
+    const putRes = await axios.put(`/unlikePost${id}`, null, config);
+    console.log(putRes);
+    dispatch({
+      type: UNLIKE_SUCCESS,
+      payload: putRes.data,
+    });
+  } catch (error) {
+    dispatch({ type: UNLIKE_FAIL, payload: error.response.data.errors });
+  }
+};
+
+//getAvatarsLike
+export const getAvatarsLike = (id) => async (dispatch) => {
+  dispatch({
+    type: GETAVATARSLIKES,
+  });
+
+  try {
+    const getRes = await axios.get(`/getAvatarsLike${id}`);
+    console.log(getRes);
+    dispatch({
+      type: GETAVATARSLIKES_SUCCESS,
+      payload: getRes.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GETAVATARSLIKES_FAIL,
+      payload: error.response.data.errors,
+    });
   }
 };

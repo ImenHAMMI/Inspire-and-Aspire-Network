@@ -46,7 +46,7 @@ class Profile extends React.Component {
           <button onClick={this.addFollow}>follow</button>
         ) : null}
         {profileUser.posts.map((post, key) => (
-          <Post key={key} post={post} name={profileUser.name} />
+          <Post key={key} postUser={post} name={profileUser.name} />
         ))}
         <ModalPost open={this.props.open} handleOpen={this.props.handleOpen} />
       </div>
