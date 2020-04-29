@@ -1,0 +1,32 @@
+.input {
+  display: none;
+}
+.avatarProfile {
+  position: relative;
+  /* border: 1px solid black; */
+  margin-right: 4%;
+}
+.photoCamera {
+  position: absolute;
+  left: 20%;
+  top: 170px;
+  /* border: 1px solid black; */
+}
+.HeaderProfile {
+  display: flex;
+  margin: 5% 20%;
+  /* border: 1px solid black; */
+  align-items: center;
+}
+.InfoProfile {
+  width: 70%;
+  /* border: 1px solid black; */
+}
+.InfoProfile span {
+  padding: 2% 2%;
+  /* border: 1px solid black; */
+}
+.InfoProfile span:nth-child(1) {
+  padding-left: 0;
+  /* border: 1px solid black; */
+}

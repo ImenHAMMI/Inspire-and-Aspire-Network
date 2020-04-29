@@ -1,0 +1,97 @@
+/* .Card {
+  border: 1px solid black;
+} */
+.postCard {
+  display: flex;
+  height: auto;
+  align-items: center;
+  /* border: 1px solid black; */
+}
+.header {
+  position: relative;
+}
+.Quote {
+  background-color: #f2c100; /*hsla(0, 1%, 70%, 0.37)*/
+  text-align: left;
+  padding: 0 10px;
+  position: relative;
+  /* display: inline-block; */
+  width: 400px;
+  height: auto;
+  border-radius: 30px;
+  /* line-height: 5; */
+}
+
+.Trending_Up_Icon {
+  position: absolute;
+  top: -110%;
+  margin-left: 6%;
+  color: rgba(0, 0, 0, 0.15);
+  /* border-radius: 70px; */
+  /* border: 3px solid white; */
+}
+/* Right triangle, right side slightly down*/
+.Quote:after {
+  content: " ";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: auto;
+  right: -15px; /*-20*/
+  top: 30%;
+  bottom: auto;
+  border: 12px solid;
+  border-color: #f2c100 transparent transparent #f2c100;
+}
+
+.experience {
+  /* text-align: left; */
+  padding-top: 5px;
+  position: relative;
+  /* display: inline-block; */
+  /* width: 300px; */
+  height: auto;
+  /* background-color: hsla(0, 1%, 70%, 0.37); */
+  border-radius: 30px;
+}
+/* .experience:after {
+  content: " ";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -20px;
+  right: auto;
+  top: 38px;
+  bottom: auto;
+  border: 12px solid;
+  border-color: hsla(0, 1%, 70%, 0.37) hsla(0, 1%, 70%, 0.37) transparent
+    transparent;
+} */
+/* .large_comma { */
+/* font-size: 20px; */
+/* border: 1px solid black;
+} */
+/* .MuiCardHeader-content {
+  text-align: left;
+} */
+.MuiTypography-h5 {
+  color: #3f51b5;
+}
+.profileAvatar {
+  margin-right: 5%;
+  border: 2px solid #3f51b5;
+}
+.Inspired {
+  color: #f2c100;
+}
+.idea {
+  width: 200px;
+  height: 200px;
+  margin-left: 75%;
+  /* border-radius: 30px;*/
+  /* border: 1px dotted #3f51b5; */
+}
+h3 {
+  /* text-align: left; */
+  padding-top: 7px;
+}

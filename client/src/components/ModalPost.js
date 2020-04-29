@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import PersonAddRoundedIcon from "@material-ui/icons/PersonAddRounded";
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import PersonAddRoundedIcon from "@material-ui/icons/AddRounded";
 import PhoneRoundedIcon from "@material-ui/icons/PhoneRounded";
 import EmailRoundedIcon from "@material-ui/icons/EmailRounded";
 import PersonRoundedIcon from "@material-ui/icons/PersonRounded";
@@ -16,10 +17,9 @@ import "../css/modalPost.css";
 
 class ModalPost extends React.Component {
   state = {
+    title: "",
     text: "",
-    // Mobile: "",
-    // EMail: "",
-    // Img: ""
+    quote: "",
   };
 
   componentDidMount() {
@@ -32,10 +32,9 @@ class ModalPost extends React.Component {
           id: this.props.contact._id,
         })
       : this.setState({
+          title: "",
+          quote: "",
           text: "",
-          //   Mobile: "",
-          //   EMail: "",
-          //   Img: "",
         });
   }
 
@@ -52,10 +51,9 @@ class ModalPost extends React.Component {
     this.props.handleOpen();
     // }
     this.setState({
+      title: "",
+      quote: "",
       text: "",
-      //   Mobile: "",
-      //   EMail: "",
-      //   Img: "",
     });
   };
 
@@ -65,7 +63,7 @@ class ModalPost extends React.Component {
     return (
       <div>
         {!isEdit ? (
-          <PersonAddRoundedIcon
+          <AddRoundedIcon
             className="IconAction"
             onClick={handleOpen}
             style={{
@@ -90,34 +88,33 @@ class ModalPost extends React.Component {
             <div className="modalPaper">
               <form>
                 <div className="RowForm">
-                  <PersonRoundedIcon className="Icon" />
+                  {/* <PersonRoundedIcon className="Icon" /> */}
+                  <input
+                    name="title"
+                    placeholder="title"
+                    defaultValue={this.state.title}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div className="RowForm">
+                  {/* <PhoneRoundedIcon className="Icon" /> */}
+                  <input
+                    name="quote"
+                    placeholder="quote"
+                    defaultValue={this.state.qupte}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div className="RowForm">
+                  {/* <EmailRoundedIcon className="Icon" /> */}
                   <input
                     name="text"
-                    placeholder="text required"
+                    placeholder="text"
                     defaultValue={this.state.text}
                     onChange={this.handleChange}
                   />
                 </div>
-                <div className="RowForm">
-                  <PhoneRoundedIcon className="Icon" />
-                  <input
-                    name="Mobile"
-                    placeholder="Mobile required"
-                    defaultValue={this.state.Mobile}
-                    onChange={this.handleChange}
-                  />
-                </div>
-                <div className="RowForm">
-                  <EmailRoundedIcon className="Icon" />
-                  <input
-                    name="EMail"
-                    type="email"
-                    placeholder="E-Mail required"
-                    defaultValue={this.state.EMail}
-                    onChange={this.handleChange}
-                  />
-                </div>
-                <div className="RowForm">
+                {/* <div className="RowForm">
                   <FaceRoundedIcon className="Icon" />
                   <input
                     name="Img"
@@ -125,10 +122,10 @@ class ModalPost extends React.Component {
                     defaultValue={this.state.Img}
                     onChange={this.handleChange}
                   />
-                </div>
+                </div> */}
                 {!isEdit ? (
                   <div className="btn-add" onClick={this.onSubmit}>
-                    <PersonAddRoundedIcon className="Icon" />
+                    {/* <PersonAddRoundedIcon className="Icon" /> */}
                     <span>Add</span>
                   </div>
                 ) : (

@@ -39,20 +39,28 @@ class SignIn extends React.Component {
   render() {
     const { isLoading } = this.props;
     return isLoading ? (
-      <CircularProgress />
+      <CircularProgress style={{ marginTop: "17%", marginLeft: "48%" }} />
     ) : localStorage.getItem("token") ? (
       <Redirect to="/" />
     ) : (
       <FormControl
         // className={clsx(classes.margin, classes.textField)}
+        className="formControl"
+        style={{ margin: " 4% 35%" }}
         variant="outlined"
       >
         <h2>Welcome back,</h2>
-        {/* <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel> */}
+        <InputLabel
+          htmlFor="outlined-adornment-email"
+          style={{ textAlign: "left", paddingTop: "8%" }}
+        >
+          Email
+        </InputLabel>
         <OutlinedInput
           id="outlined-adornment-email"
           type="email"
           name="email"
+          style={{ marginBottom: "4%" }}
           defaultValue={this.state.email}
           onChange={this.handleChange}
           endAdornment={
@@ -70,7 +78,12 @@ class SignIn extends React.Component {
           }
           labelWidth={70}
         />
-        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+        <InputLabel
+          htmlFor="outlined-adornment-password"
+          style={{ textAlign: "left", paddingTop: "31%" }}
+        >
+          Password
+        </InputLabel>
         <OutlinedInput
           id="outlined-adornment-password"
           type={this.state.showPassword ? "text" : "password"}
@@ -92,22 +105,24 @@ class SignIn extends React.Component {
           labelWidth={70}
         />
         <p className="forgot-pass">Forgot password?</p>
-        {/* <Link to="/"> */}
-        <button type="button" className="submit" onClick={this.login}>
-          Sign In
-        </button>
-        {/* </Link> */}
-        <div className="sub-container">
+        <div className="Sign">
+          <button type="button" className="submit" onClick={this.login}>
+            Sign In
+          </button>
+          {/* <div className="sub-container">
           <div className="img">
             <div className="img__text m--up">
               <h2>New here?</h2>
               <p>Sign up and discover great amount of new opportunities!</p>
             </div>
           </div>
+        </div> */}
+          <Link to="/register" className="link">
+            <button type="button" className="submit">
+              Sign Up
+            </button>
+          </Link>
         </div>
-        <Link to="/register">
-          <span className="m--up">Sign Up</span>
-        </Link>
       </FormControl>
     );
   }

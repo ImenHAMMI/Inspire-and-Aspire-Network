@@ -1,3 +1,32 @@
+.Toolbar {
+  background-color: hsla(0, 1%, 70%, 0.16);
+  /* color: yellowgreen; */
+}
+
+.menuButton {
+  margin-right: 2px;
+}
+
+.Search {
+  position: relative;
+  /* margin-left: 50px; */
+  border: 1px solid black;
+  /* width: 100%; */
+}
+.searchIcon {
+  padding: 0 2px;
+  height: 100%;
+  position: absolute;
+  /* pointerEvents: 'none', */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sectionDesktop {
+  display: flex;
+  margin-left: 70%;
+}
+
 .Avatar {
   color: orange;
   margin-right: 10%;
@@ -7,4 +36,8 @@
 button {
   width: 75px;
   border: 1px solid black;
+}
+
+.Link {
+  text-decoration: none;
 }

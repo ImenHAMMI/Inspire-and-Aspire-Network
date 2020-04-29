@@ -18,6 +18,12 @@ import {
   FOLLOW,
   FOLLOW_SUCCESS,
   FOLLOW_FAIL,
+  ADD_IMG,
+  ADDIMG_SUCCESS,
+  ADDIMG_FAIL,
+  EDIT_AVATAR,
+  EDITAVATAR_SUCCESS,
+  EDITAVATAR_FAIL,
 } from "../constants/action-types";
 
 //REGISTER
@@ -102,6 +108,47 @@ export const getProfileByID = (id) => async (dispatch) => {
     });
   } catch (error) {
     dispatch({ type: GETPROFILE_FAIL, payload: error.response.data.errors });
+  }
+};
+
+//addImg
+export const uploadImg = (img) => async (dispatch) => {
+  dispatch({
+    type: ADD_IMG,
+  });
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+      //'content-type': 'multipart/form-data'
+    },
+  };
+  try {
+    const putRes = await axios.post("/upload", img, config);
+    // console.log(putRes);
+    dispatch({
+      type: ADDIMG_SUCCESS,
+      payload: putRes.data,
+    });
+  } catch (error) {
+    dispatch({ type: ADDIMG_FAIL, payload: error.response.data.errors });
+  }
+};
+
+//editAvatar
+export const editAvatar = (img) => async (dispatch) => {
+  dispatch({
+    type: EDIT_AVATAR,
+  });
+
+  try {
+    const putRes = await axios.post("/editAvatar", img);
+
+    dispatch({
+      type: EDITAVATAR_SUCCESS,
+      payload: putRes.data,
+    });
+  } catch (error) {
+    dispatch({ type: EDITAVATAR_FAIL, payload: error.response.data.errors });
   }
 };
 

@@ -29,7 +29,7 @@ class App extends React.Component {
             <Route
               exact
               path="/profile:id"
-              render={(props) => (
+              component={(props) => (
                 <Profile
                   {...props}
                   open={this.state.open}

@@ -17,16 +17,24 @@ import {
   FOLLOW,
   FOLLOW_SUCCESS,
   FOLLOW_FAIL,
+  EDIT_AVATAR,
+  EDITAVATAR_SUCCESS,
+  EDITAVATAR_FAIL,
+  ADD_IMG,
+  ADDIMG_SUCCESS,
+  ADDIMG_FAIL,
 } from "../constants/action-types";
 
 const initialState = {
   isLoading: false,
+  loadingProfile: false,
   user: null,
   errors: [],
   isAuth: false,
   profile: null,
   profileUser: null,
   users: [],
+  imgProfile: null,
 };
 
 const authReducer = (state = initialState, { type, payload }) => {
@@ -56,11 +64,11 @@ const authReducer = (state = initialState, { type, payload }) => {
     case GETUSERS_SUCCESS:
       return { ...state, isLoading: false, users: payload };
     case GET_PROFILE:
-      return { ...state, isLoading: true };
+      return { ...state, loadingProfile: true };
     case GETPROFILE_FAIL:
-      return { ...state, isLoading: false, errors: payload };
+      return { ...state, loadingProfile: false, errors: payload };
     case GETPROFILE_SUCCESS:
-      return { ...state, isLoading: false, profileUser: payload };
+      return { ...state, loadingProfile: false, profileUser: payload };
     case FOLLOW:
       return { ...state, isLoading: true };
     case FOLLOW_FAIL:
@@ -72,6 +80,18 @@ const authReducer = (state = initialState, { type, payload }) => {
         profile: payload[0],
         profileUser: payload[1],
       };
+    case ADD_IMG:
+      return { ...state, isLoading: true };
+    case ADDIMG_SUCCESS:
+      return { ...state, isLoading: false, imgProfile: payload };
+    case ADDIMG_FAIL:
+      return { ...state, isLoading: false, errors: payload };
+    case EDIT_AVATAR:
+      return { ...state, isLoading: true };
+    case EDITAVATAR_SUCCESS:
+      return { ...state, isLoading: false, imgProfile: payload };
+    case EDITAVATAR_FAIL:
+      return { ...state, isLoading: false, errors: payload };
     default:
       return state;
   }

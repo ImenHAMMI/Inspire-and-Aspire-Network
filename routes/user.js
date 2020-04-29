@@ -30,9 +30,18 @@ router.get("/users", userController.getAllUsers);
 //@access  Private
 router.get("/profile:id", userController.getProfileByID);
 
-// @route  GET user/profile:id
-// @desc   Return profile by id
+// @route  PUT user/profile:id
+// @desc   Add follow
 //@access  Private
 router.put("/profile:id", isAuth(), userController.follow);
 
+// @route  PUT user/profile:id
+// @desc   Upload image
+//@access  Private
+router.post("/upload", isAuth(), userController.uploadImg);
+
+// @route  PUT user/profile:id
+// @desc   edit avatar
+//@access  Private
+router.post("/editAvatar", userController.editAvatar);
 module.exports = router;

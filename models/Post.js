@@ -6,14 +6,12 @@ const postSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  title: String,
+  quote: String,
   text: {
     type: String,
     required: true,
   },
-  name: String,
-
-  avatar: String,
-
   likedBy: [
     {
       type: Schema.Types.ObjectId,

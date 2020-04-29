@@ -1,11 +1,35 @@
 const bcrypt = require("bcryptjs");
 const config = require("config");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
 const User = require("../models/User");
 const Post = require("../models/Post");
+const ImgProfile = require("../models/ImgProfile");
 
 const secretOrKey = config.get("secretOrKey");
+
+// const storage = multer.diskStorage({
+//   destination: "./uploads/",
+//   filename: function (req, file, cb) {
+//     cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+//   },
+// });
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+});
+const upload = multer({
+  storage: storage,
+}).single("myImage");
+
+// const upload = multer({
+//   storage: storage,
+//   limits: { fileSize: 1000000 },
+// }).single("myImage");
 
 module.exports = userController = {
   register: async (req, res) => {
@@ -53,7 +77,6 @@ module.exports = userController = {
         id: searchRes._id,
         email: searchRes.email,
         name: searchRes.name,
-        avatar: searchRes.avatar,
       }; // create jwt payload
 
       jwt.sign(payload, secretOrKey, (err, token) => {
@@ -69,12 +92,16 @@ module.exports = userController = {
     const { id, name, email, avatar, followers, following } = req.user;
     try {
       const searchRes = await Post.find({ postedBy: id });
+      const searchResImg = await ImgProfile.findOne({ avatar: id }).sort({
+        createdAt: "desc",
+      });
+      // console.log(searchResImg);
       if (searchRes)
         return res.status(201).json({
           id,
           name,
           email,
-          avatar,
+          avatar: searchResImg,
           followers,
           following,
           posts: searchRes,
@@ -109,6 +136,49 @@ module.exports = userController = {
           posts: searchResPost,
         });
       }
+    } catch (err) {
+      res.status(500).json({ errors: err });
+    }
+  },
+  uploadImg: async (req, res) => {
+    const { _id } = req.user;
+    try {
+      upload(req, res, (err) => {
+        if (err) return res.status(400).json({ errors: err });
+        // console.log("Request ---", req.body);
+        // console.log("Request file ---", req.file); //Here you get file.
+        // const new_img = new ImgProfile();
+        let img = fs.readFileSync(req.file.path);
+        let encode_image = img.toString("base64");
+        // new_img.img.data = Buffer.from(encode_image, "base64");
+        // new_img.img.contentType = req.file.mimetype;
+        // new_img.avatar = _id;
+        let finalImg = {
+          contentType: req.file.mimetype,
+          data: Buffer.from(encode_image, "base64"),
+        };
+        // new_img.save();
+        // console.log(new_img);
+        res.status(200).json({ img: finalImg, avatar: _id });
+        /**message: "New image added to the db!", */
+        /*Now do where ever you want to do*/
+        // // Define a JSONobject for the image attributes for saving to database
+      });
+    } catch (err) {
+      res.status(500).json({ errors: err });
+    }
+  },
+  editAvatar: async (req, res) => {
+    const { avatar, img } = req.body;
+
+    try {
+      const new_img = new ImgProfile({
+        img,
+        avatar,
+      });
+
+      const addRes = await new_img.save();
+      res.status(200).json(addRes);
     } catch (err) {
       res.status(500).json({ errors: err });
     }

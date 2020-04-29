@@ -1,8 +1,5 @@
-const config = require("config");
-// const jwt = require("jsonwebtoken");
 const Post = require("../models/Post");
 const User = require("../models/User");
-const secretOrKey = config.get("secretOrKey");
 
 module.exports = postController = {
   getPosts: async (req, res) => {
@@ -12,33 +9,30 @@ module.exports = postController = {
       const searchRes = await Post.find();
       // console.log(searchRes);
       if (searchRes) {
-        // console.log(searchRes.length);
         for (let i = 0; i < searchRes.length; i++) {
           // console.log(posts);
-          // console.log(searchRes[i].likedBy.length);
+
           for (let j = 0; j < searchRes[i].likedBy.length; j++) {
-            // id = searchRes[i].likedBy[j]._id + "";
-            // console.log( + "");
             try {
               const searchResUser = await User.findOne({
                 _id: searchRes[i].likedBy[j]._id,
               });
-              // console.log(searchResUser);
+
               avatarsLikes.push({
                 name: searchResUser.name,
                 avatar: searchResUser.avatar,
               });
               // console.log(avatarsLikes);
-              posts.push({
-                _id: searchRes[i]._id,
-                text: searchRes[i].text,
-                avatarsLikes,
-              });
-              console.log(posts);
             } catch (err) {
               res.status(500).json({ msg: "err finding user" });
             }
           }
+          posts.push({
+            _id: searchRes[i]._id,
+            text: searchRes[i].text,
+            avatars: avatarsLikes,
+          });
+          // console.log(posts);
           return res.status(201).json(searchRes);
           //   .sort({ date: -1 })
         }
@@ -48,12 +42,12 @@ module.exports = postController = {
     }
   },
   addPost: async (req, res) => {
-    const { text, name, avatar } = req.body;
+    const { title, text, quote } = req.body;
 
     const newPost = new Post({
+      title,
+      quote,
       text,
-      name,
-      avatar,
       postedBy: req.user.id,
     });
     try {
@@ -118,6 +112,7 @@ module.exports = postController = {
       res.status(500).json({ errors: err });
     }
   },
+  addComment: async (req, res) => {},
   // getAvatarsLikePost: async (req, res) => {
   //   const { id } = req.params;
   //   console.log(req.params);

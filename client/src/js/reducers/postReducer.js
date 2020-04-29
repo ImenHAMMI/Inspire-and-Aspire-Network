@@ -42,13 +42,21 @@ const postReducer = (state = initialState, { type, payload }) => {
     case LIKE:
       return { ...state, isLoading: true };
     case LIKE_SUCCESS:
-      return { ...state, isLoading: false, post: payload };
+      return {
+        ...state,
+        isLoading: false,
+        posts: state.posts.map((p) => (p._id === payload._id ? payload : p)),
+      };
     case LIKE_FAIL:
       return { ...state, isLoading: false, errors: payload };
     case UNLIKE:
       return { ...state, isLoading: true };
     case UNLIKE_SUCCESS:
-      return { ...state, isLoading: false, post: payload };
+      return {
+        ...state,
+        isLoading: false,
+        posts: state.posts.map((p) => (p._id === payload._id ? payload : p)),
+      };
     case UNLIKE_FAIL:
       return { ...state, isLoading: false, errors: payload };
     case GETAVATARSLIKES:

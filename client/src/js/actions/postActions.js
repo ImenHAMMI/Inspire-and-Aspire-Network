@@ -73,6 +73,7 @@ export const likePost = (id) => async (dispatch) => {
       type: LIKE_SUCCESS,
       payload: putRes.data,
     });
+    getPosts();
   } catch (error) {
     dispatch({ type: LIKE_FAIL, payload: error.response.data.errors });
   }
@@ -95,6 +96,7 @@ export const unLikePost = (id) => async (dispatch) => {
       type: UNLIKE_SUCCESS,
       payload: putRes.data,
     });
+    getPosts();
   } catch (error) {
     dispatch({ type: UNLIKE_FAIL, payload: error.response.data.errors });
   }
