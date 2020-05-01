@@ -89,7 +89,7 @@ module.exports = userController = {
     }
   },
   current: async (req, res) => {
-    const { id, name, email, avatar, followers, following } = req.user;
+    const { id, name, email, followers, following } = req.user;
     try {
       const searchRes = await Post.find({ postedBy: id });
       const searchResImg = await ImgProfile.findOne({ avatar: id }).sort({

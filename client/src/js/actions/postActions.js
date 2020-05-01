@@ -22,8 +22,13 @@ export const getPosts = () => async (dispatch) => {
   dispatch({
     type: GET_POSTS,
   });
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
   try {
-    const searchRes = await axios.get("/posts");
+    const searchRes = await axios.get("/posts", config);
     // console.log(searchRes);
     dispatch({
       type: GETPOSTS_SUCCESS,

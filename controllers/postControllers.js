@@ -4,40 +4,66 @@ const User = require("../models/User");
 module.exports = postController = {
   getPosts: async (req, res) => {
     const posts = [];
-    const avatarsLikes = [];
-    // const {_id} = req.body
+    // const avatarsLikes = [];
+    const { _id } = req.user;
+
     try {
-      const searchRes = await Post.find();
-      // console.log(searchRes);
+      const searchRes = await User.findOne(_id);
+      const searchResPost = await Post.find({ postedBy: _id });
+      if (searchResPost)
+        searchResPost.forEach((el) => {
+          posts.push(el);
+        });
       if (searchRes) {
-        for (let i = 0; i < searchRes.length; i++) {
-          // console.log(posts);
-
-          for (let j = 0; j < searchRes[i].likedBy.length; j++) {
-            try {
-              const searchResUser = await User.findOne({
-                _id: searchRes[i].likedBy[j]._id,
-              });
-
-              avatarsLikes.push({
-                name: searchResUser.name,
-                avatar: searchResUser.avatar,
-              });
-              // console.log(avatarsLikes);
-            } catch (err) {
-              res.status(500).json({ msg: "err finding user" });
-            }
-          }
-          posts.push({
-            _id: searchRes[i]._id,
-            text: searchRes[i].text,
-            avatars: avatarsLikes,
+        for (let i = 0; i < searchRes.following.length; i++) {
+          const searchResPost = await Post.find({
+            postedBy: searchRes.following[i]._id,
           });
-          // console.log(posts);
-          return res.status(201).json(searchRes);
-          //   .sort({ date: -1 })
+          const searchResUser = await User.findOne({
+            _id: searchRes.following[i]._id,
+          });
+          searchResPost.forEach((el) => {
+            posts.push({
+              name: searchResUser.name,
+              title: el.title,
+              quote: el.quote,
+              text: el.text,
+              date: el.date,
+              likedBy: el.likedBy,
+            });
+          });
         }
+        // posts.sort({ date: "desc" });
+        return res.status(201).json(posts);
       }
+      // console.log(posts);
+      // if (searchRes) {
+      //   for (let i = 0; i < searchRes.length; i++) {
+      //     // console.log(posts);
+
+      //     for (let j = 0; j < searchRes[i].likedBy.length; j++) {
+      //       try {
+      //         const searchResUser = await User.findOne({
+      //           _id: searchRes[i].likedBy[j]._id,
+      //         });
+
+      //         avatarsLikes.push({
+      //           name: searchResUser.name,
+      //           avatar: searchResUser.avatar,
+      //         });
+      //         // console.log(avatarsLikes);
+      //       } catch (err) {
+      //         res.status(500).json({ msg: "err finding user" });
+      //       }
+      //     }
+      //     posts.push({
+      //       _id: searchRes[i]._id,
+      //       text: searchRes[i].text,
+      //       avatars: avatarsLikes,
+      //     });
+      // console.log(posts);
+
+      //   .sort({ date: -1 })
     } catch (err) {
       res.status(500).json({ errors: err });
     }

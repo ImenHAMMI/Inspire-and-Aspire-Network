@@ -13,7 +13,7 @@ class PostList extends Component {
     return (
       <div className="postList">
         {posts.map((post, key) => (
-          <Post key={key} postUser={post} name={post.name} />
+          <Post key={key} postUser={post} />
         ))}
       </div>
     );

@@ -52,8 +52,8 @@ class Post extends React.Component {
     return window.btoa(binary);
   }
   render() {
-    const { title, text, quote, date, likedBy } = this.props.postUser;
-    const { name, profile, isLoading, post, avatarsLikes } = this.props;
+    const { name, title, text, quote, date, likedBy } = this.props.postUser;
+    const { profile, isLoading, post, avatarsLikes } = this.props;
     const isLiked = likedBy.indexOf(profile.id);
     const base64Flag = "data:image/jpeg;base64,";
     // console.log(this.props.avatarsLikes);
@@ -106,7 +106,7 @@ class Post extends React.Component {
               {text}
             </Typography>
 
-            <CardHeader title={profile.name} subheader={date.substr(0, 10)} />
+            <CardHeader title={name} subheader={date.substr(0, 10)} />
             <CardActions disableSpacing>
               {isLiked < 0 ? (
                 <IconButton
