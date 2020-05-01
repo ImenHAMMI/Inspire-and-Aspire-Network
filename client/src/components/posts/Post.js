@@ -62,15 +62,22 @@ class Post extends React.Component {
       <div className="Card">
         <img className="idea" src={idea3}></img>
         <div className="postCard">
-          <Avatar
-            alt={profile.name}
-            src={
-              base64Flag +
-              this.arrayBufferToBase64(profile.avatar.img.data.data)
-            }
-            className="profileAvatar"
-            style={{ width: 170, height: 170 }}
-          ></Avatar>
+          {profile.avatar ? (
+            <Avatar
+              alt={profile.name}
+              src={
+                base64Flag +
+                this.arrayBufferToBase64(profile.avatar.img.data.data)
+              }
+              className="profileAvatar"
+              style={{ width: 170, height: 170 }}
+            ></Avatar>
+          ) : (
+            <Avatar
+              className="profileAvatar"
+              style={{ width: 170, height: 170 }}
+            ></Avatar>
+          )}
           <div>
             <div className="header">
               <Typography

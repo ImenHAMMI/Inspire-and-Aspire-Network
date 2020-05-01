@@ -120,16 +120,22 @@ class Home extends React.Component {
               <div className="Grow" />
               <div className="sectionDesktop">
                 <Link to={`/profile${profile.id}`} className="Link">
-                  <Avatar
-                    alt={profile.name}
-                    src={
-                      base64Flag +
-                      this.arrayBufferToBase64(profile.avatar.img.data.data)
-                    }
-                    className="Avatar"
-                  >
-                    {profile.name.substr(0, 1).toUpperCase()}
-                  </Avatar>
+                  {profile.avatar ? (
+                    <Avatar
+                      alt={profile.name}
+                      src={
+                        base64Flag +
+                        this.arrayBufferToBase64(profile.avatar.img.data.data)
+                      }
+                      className="Avatar"
+                    >
+                      {profile.name.substr(0, 1).toUpperCase()}
+                    </Avatar>
+                  ) : (
+                    <Avatar className="Avatar">
+                      {profile.name.substr(0, 1).toUpperCase()}
+                    </Avatar>
+                  )}
                 </Link>
                 <IconButton aria-label="show 4 new mails" color="inherit">
                   <Badge badgeContent={4} color="secondary">

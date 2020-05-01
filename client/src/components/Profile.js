@@ -89,13 +89,18 @@ class Profile extends React.Component {
               className="avatarProfile"
               style={{ width: 170, height: 170 }}
             ></Avatar>
-          ) : (
+          ) : profile.avatar ? (
             <Avatar
               alt={profileUser.name}
               src={
                 base64Flag +
                 this.arrayBufferToBase64(profile.avatar.img.data.data)
               }
+              className="avatarProfile"
+              style={{ width: 170, height: 170 }}
+            ></Avatar>
+          ) : (
+            <Avatar
               className="avatarProfile"
               style={{ width: 170, height: 170 }}
             ></Avatar>

@@ -5,6 +5,7 @@ module.exports = postController = {
   getPosts: async (req, res) => {
     const posts = [];
     const avatarsLikes = [];
+    // const {_id} = req.body
     try {
       const searchRes = await Post.find();
       // console.log(searchRes);

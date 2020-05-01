@@ -11,6 +11,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import TextField from "@material-ui/core/TextField";
 
 import { login } from "../js/actions/authActions";
 import "../css/signin.css";
@@ -50,37 +51,18 @@ class SignIn extends React.Component {
         variant="outlined"
       >
         <h2>Welcome back,</h2>
-        <InputLabel
-          htmlFor="outlined-adornment-email"
-          style={{ textAlign: "left", paddingTop: "8%" }}
-        >
-          Email
-        </InputLabel>
-        <OutlinedInput
-          id="outlined-adornment-email"
-          type="email"
-          name="email"
-          style={{ marginBottom: "4%" }}
+        <TextField
+          id="outlined-basic"
+          label="Email"
+          variant="outlined"
           defaultValue={this.state.email}
           onChange={this.handleChange}
-          endAdornment={
-            <InputAdornment position="end">
-              <AccountCircle />
-              {/* <IconButton
-                aria-label="toggle password visibility"
-                onClick={this.handleClickShowPassword}
-                onMouseDown={this.handleMouseDownPassword}
-                edge="end"
-              >
-                {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton> */}
-            </InputAdornment>
-          }
-          labelWidth={70}
+          type="email"
+          name="email"
         />
         <InputLabel
           htmlFor="outlined-adornment-password"
-          style={{ textAlign: "left", paddingTop: "31%" }}
+          style={{ marginTop: "143px" }}
         >
           Password
         </InputLabel>
