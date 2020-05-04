@@ -115,7 +115,7 @@ export const getAvatarsLike = (id) => async (dispatch) => {
 
   try {
     const getRes = await axios.get(`/getAvatarsLike${id}`);
-    console.log(getRes);
+    // console.log(getRes);
     dispatch({
       type: GETAVATARSLIKES_SUCCESS,
       payload: getRes.data,

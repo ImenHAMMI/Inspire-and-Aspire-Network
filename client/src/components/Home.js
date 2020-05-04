@@ -84,11 +84,13 @@ class Home extends React.Component {
         <MenuItem onClick={this.logOut}>Log out</MenuItem>
       </Menu>
     );
+
     return isLoading ? (
       <CircularProgress style={{ marginTop: "17%", marginLeft: "48%" }} />
     ) : !isAuth ? (
-      <Redirect to="/login" />
+      <CircularProgress style={{ marginTop: "17%", marginLeft: "48%" }} />
     ) : (
+      // <Redirect to="/login" />
       <div>
         <div className="Grow">
           <AppBar position="static">
@@ -169,7 +171,7 @@ class Home extends React.Component {
         </div>
         <div>
           <PostList />
-          <UserList />
+          {/* <UserList /> */}
         </div>
       </div>
     );

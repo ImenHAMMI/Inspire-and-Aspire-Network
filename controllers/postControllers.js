@@ -1,69 +1,99 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
+const Imgprofile = require("../models/ImgProfile");
 
 module.exports = postController = {
   getPosts: async (req, res) => {
     const posts = [];
-    // const avatarsLikes = [];
     const { _id } = req.user;
 
     try {
       const searchRes = await User.findOne(_id);
-      const searchResPost = await Post.find({ postedBy: _id });
-      if (searchResPost)
-        searchResPost.forEach((el) => {
-          posts.push(el);
-        });
       if (searchRes) {
+        const searchResPost = await Post.find({ postedBy: _id }).populate({
+          path: "postedBy likedBy",
+          select: "name",
+          model: User,
+        });
+        if (searchResPost) {
+          for (let j = 0; j < searchResPost.length; j++) {
+            const avatarsLikes = [];
+            const {
+              postedBy,
+              title,
+              quote,
+              text,
+              date,
+              likedBy,
+            } = searchResPost[j];
+            for (let k = 0; k < likedBy.length; k++) {
+              const searchResImgProfile = await Imgprofile.findOne({
+                avatar: likedBy[k]._id,
+              })
+                .populate({ path: "avatar", select: "name", model: User })
+                .sort({
+                  createdAt: "desc",
+                });
+              if (searchResImgProfile) avatarsLikes.push(searchResImgProfile);
+              else avatarsLikes.push(likedBy[k].name);
+            }
+
+            posts.push({
+              name: postedBy.name,
+              title: title,
+              quote: quote,
+              text: text,
+              date: date,
+              likedBy: likedBy,
+              avatarsLikesImg: avatarsLikes,
+            });
+          }
+        }
         for (let i = 0; i < searchRes.following.length; i++) {
           const searchResPost = await Post.find({
             postedBy: searchRes.following[i]._id,
+          }).populate({
+            path: "postedBy likedBy",
+            select: "name",
+            model: User,
           });
-          const searchResUser = await User.findOne({
-            _id: searchRes.following[i]._id,
-          });
-          searchResPost.forEach((el) => {
+          for (let j = 0; j < searchResPost.length; j++) {
+            const avatarsLikes = [];
+            const {
+              postedBy,
+              title,
+              quote,
+              text,
+              date,
+              likedBy,
+            } = searchResPost[j];
+            for (let k = 0; k < likedBy.length; k++) {
+              const searchResImgProfile = await Imgprofile.findOne({
+                avatar: likedBy[k]._id,
+              })
+                .populate({ path: "avatar", select: "name", model: User })
+                .sort({
+                  createdAt: "desc",
+                });
+              if (searchResImgProfile) avatarsLikes.push(searchResImgProfile);
+              else avatarsLikes.push(likedBy[k].name);
+            }
+
             posts.push({
-              name: searchResUser.name,
-              title: el.title,
-              quote: el.quote,
-              text: el.text,
-              date: el.date,
-              likedBy: el.likedBy,
+              name: postedBy.name,
+              title: title,
+              quote: quote,
+              text: text,
+              date: date,
+              likedBy: likedBy,
+              avatarsLikesImg: avatarsLikes,
             });
-          });
+            // console.log(posts);
+          }
         }
         // posts.sort({ date: "desc" });
-        return res.status(201).json(posts);
+        return res.status(201).json(posts.sort((a, b) => b.date - a.date));
       }
-      // console.log(posts);
-      // if (searchRes) {
-      //   for (let i = 0; i < searchRes.length; i++) {
-      //     // console.log(posts);
-
-      //     for (let j = 0; j < searchRes[i].likedBy.length; j++) {
-      //       try {
-      //         const searchResUser = await User.findOne({
-      //           _id: searchRes[i].likedBy[j]._id,
-      //         });
-
-      //         avatarsLikes.push({
-      //           name: searchResUser.name,
-      //           avatar: searchResUser.avatar,
-      //         });
-      //         // console.log(avatarsLikes);
-      //       } catch (err) {
-      //         res.status(500).json({ msg: "err finding user" });
-      //       }
-      //     }
-      //     posts.push({
-      //       _id: searchRes[i]._id,
-      //       text: searchRes[i].text,
-      //       avatars: avatarsLikes,
-      //     });
-      // console.log(posts);
-
-      //   .sort({ date: -1 })
     } catch (err) {
       res.status(500).json({ errors: err });
     }

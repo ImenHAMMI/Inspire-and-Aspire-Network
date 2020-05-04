@@ -6,7 +6,7 @@ import User from "./User";
 import { getAllUsers } from "../../js/actions/authActions";
 class UserList extends Component {
   componentDidMount() {
-    // this.props.getAllUsers();
+    this.props.getAllUsers();
   }
   render() {
     const { users, profile } = this.props;

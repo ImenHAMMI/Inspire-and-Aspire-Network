@@ -52,11 +52,19 @@ class Post extends React.Component {
     return window.btoa(binary);
   }
   render() {
-    const { name, title, text, quote, date, likedBy } = this.props.postUser;
-    const { profile, isLoading, post, avatarsLikes } = this.props;
+    const {
+      name,
+      title,
+      text,
+      quote,
+      date,
+      likedBy,
+      avatarsLikesImg,
+    } = this.props.postUser;
+    const { profile, isLoading, post } = this.props;
     const isLiked = likedBy.indexOf(profile.id);
     const base64Flag = "data:image/jpeg;base64,";
-    // console.log(this.props.avatarsLikes);
+    // console.log(this.props.postUser.avatarsLikesImg);
 
     return (
       <div className="Card">
@@ -141,12 +149,21 @@ class Post extends React.Component {
               //   title={profile.name}
               //   subheader={date}
               // /> */}
-
-            <AvatarGroup max={3}>
-              {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-          <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-          <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-          <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" /> */}
+            <AvatarGroup max={5}>
+              {avatarsLikesImg.map((el, key) =>
+                el.img ? (
+                  <Avatar
+                    key={key}
+                    alt="imgProfile"
+                    src={
+                      base64Flag + this.arrayBufferToBase64(el.img.data.data)
+                    }
+                  />
+                ) : (
+                  <Avatar key={key}>{el.substr(0, 1).toUpperCase()}</Avatar>
+                )
+              )}
+              }
             </AvatarGroup>
           </div>
         </div>

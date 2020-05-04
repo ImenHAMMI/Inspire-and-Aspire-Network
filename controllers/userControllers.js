@@ -90,22 +90,53 @@ module.exports = userController = {
   },
   current: async (req, res) => {
     const { id, name, email, followers, following } = req.user;
+    const posts = [];
     try {
-      const searchRes = await Post.find({ postedBy: id });
+      const searchRes = await Post.find({ postedBy: id }).populate({
+        path: "likedBy",
+        select: "name",
+        model: User,
+      });
+
+      if (searchRes) {
+        for (let i = 0; i < searchRes.length; i++) {
+          const avatarsLikes = [];
+          const { title, quote, text, date, likedBy } = searchRes[i];
+          for (let k = 0; k < likedBy.length; k++) {
+            const searchResImgProfile = await ImgProfile.findOne({
+              avatar: likedBy[k]._id,
+            })
+              .populate({ path: "avatar", select: "name", model: User })
+              .sort({
+                createdAt: "desc",
+              });
+            if (searchResImgProfile) avatarsLikes.push(searchResImgProfile);
+            else avatarsLikes.push(likedBy[k].name);
+          }
+          posts.push({
+            name: name,
+            title: title,
+            quote: quote,
+            text: text,
+            date: date,
+            likedBy: likedBy,
+            avatarsLikesImg: avatarsLikes,
+          });
+        }
+      }
       const searchResImg = await ImgProfile.findOne({ avatar: id }).sort({
         createdAt: "desc",
       });
-      // console.log(searchResImg);
-      if (searchRes)
-        return res.status(201).json({
-          id,
-          name,
-          email,
-          avatar: searchResImg,
-          followers,
-          following,
-          posts: searchRes,
-        });
+      // console.log(posts);
+      return res.status(201).json({
+        id,
+        name,
+        email,
+        avatar: searchResImg,
+        followers,
+        following,
+        posts: posts,
+      });
     } catch (err) {
       res.status(500).json({ errors: err });
     }
@@ -121,19 +152,55 @@ module.exports = userController = {
   },
   getProfileByID: async (req, res) => {
     const { id } = req.params;
+    const posts = [];
     try {
       const searchRes = await User.findOne({ _id: id });
-      const searchResPost = await Post.find({ postedBy: id });
-      if (searchRes && searchResPost) {
-        const { _id, name, email, avatar, followers, following } = searchRes;
+      if (searchRes) {
+        const { _id, name, email, followers, following } = searchRes;
+        const searchResPost = await Post.find({ postedBy: id }).populate({
+          path: "likedBy",
+          select: "name",
+          model: User,
+        });
+
+        if (searchResPost) {
+          for (let i = 0; i < searchResPost.length; i++) {
+            const avatarsLikes = [];
+            const { title, quote, text, date, likedBy } = searchResPost[i];
+            for (let k = 0; k < likedBy.length; k++) {
+              const searchResImgProfile = await ImgProfile.findOne({
+                avatar: likedBy[k]._id,
+              })
+                .populate({ path: "avatar", select: "name", model: User })
+                .sort({
+                  createdAt: "desc",
+                });
+              if (searchResImgProfile) avatarsLikes.push(searchResImgProfile);
+              else avatarsLikes.push(likedBy[k].name);
+            }
+            posts.push({
+              name: name,
+              title: title,
+              quote: quote,
+              text: text,
+              date: date,
+              likedBy: likedBy,
+              avatarsLikesImg: avatarsLikes,
+            });
+          }
+        }
+        const searchResImg = await ImgProfile.findOne({ avatar: id }).sort({
+          createdAt: "desc",
+        });
+
         return res.status(201).json({
           id: _id,
           name,
           email,
-          avatar,
+          avatar: searchResImg,
           followers,
           following,
-          posts: searchResPost,
+          posts: posts,
         });
       }
     } catch (err) {

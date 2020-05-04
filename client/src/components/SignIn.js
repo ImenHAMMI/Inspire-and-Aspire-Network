@@ -39,6 +39,7 @@ class SignIn extends React.Component {
   };
   render() {
     const { isLoading } = this.props;
+    console.log(localStorage.getItem("token"));
     return isLoading ? (
       <CircularProgress style={{ marginTop: "17%", marginLeft: "48%" }} />
     ) : localStorage.getItem("token") ? (
