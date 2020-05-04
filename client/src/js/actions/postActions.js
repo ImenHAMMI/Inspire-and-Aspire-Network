@@ -73,12 +73,11 @@ export const likePost = (id) => async (dispatch) => {
   };
   try {
     const putRes = await axios.put(`/likePost${id}`, null, config);
-    console.log(putRes);
+    // console.log(putRes);
     dispatch({
       type: LIKE_SUCCESS,
       payload: putRes.data,
     });
-    // getPosts();
   } catch (error) {
     dispatch({ type: LIKE_FAIL, payload: error.response.data.errors });
   }
@@ -96,12 +95,12 @@ export const unLikePost = (id) => async (dispatch) => {
   };
   try {
     const putRes = await axios.put(`/unlikePost${id}`, null, config);
-    console.log(putRes);
+    // console.log(putRes);
     dispatch({
       type: UNLIKE_SUCCESS,
       payload: putRes.data,
     });
-    getPosts();
+    // getPosts();
   } catch (error) {
     dispatch({ type: UNLIKE_FAIL, payload: error.response.data.errors });
   }

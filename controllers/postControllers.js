@@ -161,18 +161,16 @@ module.exports = postController = {
             else avatarsLikesImg.push(likedBy[k].name);
           }
 
-          return res
-            .status(200)
-            .json({
-              _id,
-              name: postedBy.name,
-              title,
-              quote,
-              text,
-              date,
-              likedBy,
-              avatarsLikesImg,
-            });
+          return res.status(200).json({
+            _id,
+            name: postedBy.name,
+            title,
+            quote,
+            text,
+            date,
+            likedBy,
+            avatarsLikesImg,
+          });
         } catch (error) {
           res.status(500).json({ msg: "error updating data" });
         }
@@ -185,11 +183,10 @@ module.exports = postController = {
   unLikePost: async (req, res) => {
     const { id } = req.params;
     const { _id } = req.user;
-    // console.log(req.params);
-    // console.log(req.user);
+
     try {
       const searchRes = await Post.findOne({ _id: id });
-      // console.log(searchRes.likedBy);
+
       if (searchRes.likedBy.indexOf(_id) >= 0) {
         const filtredLikes = searchRes.likedBy.filter((id) => "" + id != _id);
 
@@ -198,8 +195,43 @@ module.exports = postController = {
             { _id: id },
             { $set: { likedBy: filtredLikes } },
             { new: true }
-          );
-          return res.status(200).json(updateResUnLikes);
+          ).populate({
+            path: "postedBy likedBy",
+            select: "name",
+            model: User,
+          });
+          const avatarsLikesImg = [];
+          const {
+            _id,
+            postedBy,
+            title,
+            quote,
+            text,
+            date,
+            likedBy,
+          } = updateResUnLikes;
+          for (let k = 0; k < likedBy.length; k++) {
+            const searchResImgProfile = await Imgprofile.findOne({
+              avatar: likedBy[k]._id,
+            })
+              .populate({ path: "avatar", select: "name", model: User })
+              .sort({
+                createdAt: "desc",
+              });
+            if (searchResImgProfile) avatarsLikesImg.push(searchResImgProfile);
+            else avatarsLikesImg.push(likedBy[k].name);
+          }
+
+          return res.status(200).json({
+            _id,
+            name: postedBy.name,
+            title,
+            quote,
+            text,
+            date,
+            likedBy,
+            avatarsLikesImg,
+          });
         } catch (error) {
           res.status(500).json({ msg: "error updating data" });
         }
