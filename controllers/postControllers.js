@@ -17,8 +17,9 @@ module.exports = postController = {
         });
         if (searchResPost) {
           for (let j = 0; j < searchResPost.length; j++) {
-            const avatarsLikes = [];
+            const avatarsLikesImg = [];
             const {
+              _id,
               postedBy,
               title,
               quote,
@@ -34,18 +35,20 @@ module.exports = postController = {
                 .sort({
                   createdAt: "desc",
                 });
-              if (searchResImgProfile) avatarsLikes.push(searchResImgProfile);
-              else avatarsLikes.push(likedBy[k].name);
+              if (searchResImgProfile)
+                avatarsLikesImg.push(searchResImgProfile);
+              else avatarsLikesImg.push(likedBy[k].name);
             }
 
             posts.push({
+              _id,
               name: postedBy.name,
-              title: title,
-              quote: quote,
-              text: text,
-              date: date,
-              likedBy: likedBy,
-              avatarsLikesImg: avatarsLikes,
+              title,
+              quote,
+              text,
+              date,
+              likedBy,
+              avatarsLikesImg,
             });
           }
         }
@@ -58,8 +61,9 @@ module.exports = postController = {
             model: User,
           });
           for (let j = 0; j < searchResPost.length; j++) {
-            const avatarsLikes = [];
+            const avatarsLikesImg = [];
             const {
+              _id,
               postedBy,
               title,
               quote,
@@ -75,18 +79,20 @@ module.exports = postController = {
                 .sort({
                   createdAt: "desc",
                 });
-              if (searchResImgProfile) avatarsLikes.push(searchResImgProfile);
-              else avatarsLikes.push(likedBy[k].name);
+              if (searchResImgProfile)
+                avatarsLikesImg.push(searchResImgProfile);
+              else avatarsLikesImg.push(likedBy[k].name);
             }
 
             posts.push({
+              _id,
               name: postedBy.name,
-              title: title,
-              quote: quote,
-              text: text,
-              date: date,
-              likedBy: likedBy,
-              avatarsLikesImg: avatarsLikes,
+              title,
+              quote,
+              text,
+              date,
+              likedBy,
+              avatarsLikesImg,
             });
             // console.log(posts);
           }
@@ -120,7 +126,6 @@ module.exports = postController = {
 
     try {
       const searchRes = await Post.findOne({ _id: id });
-
       if (searchRes.likedBy.indexOf(_id) < 0) {
         searchRes.likedBy.push(_id);
 
@@ -129,8 +134,45 @@ module.exports = postController = {
             { _id: id },
             { $set: { likedBy: searchRes.likedBy } },
             { new: true }
-          );
-          return res.status(200).json(updateResLikes);
+          ).populate({
+            path: "postedBy likedBy",
+            select: "name",
+            model: User,
+          });
+          const avatarsLikesImg = [];
+          const {
+            _id,
+            postedBy,
+            title,
+            quote,
+            text,
+            date,
+            likedBy,
+          } = updateResLikes;
+          for (let k = 0; k < likedBy.length; k++) {
+            const searchResImgProfile = await Imgprofile.findOne({
+              avatar: likedBy[k]._id,
+            })
+              .populate({ path: "avatar", select: "name", model: User })
+              .sort({
+                createdAt: "desc",
+              });
+            if (searchResImgProfile) avatarsLikesImg.push(searchResImgProfile);
+            else avatarsLikesImg.push(likedBy[k].name);
+          }
+
+          return res
+            .status(200)
+            .json({
+              _id,
+              name: postedBy.name,
+              title,
+              quote,
+              text,
+              date,
+              likedBy,
+              avatarsLikesImg,
+            });
         } catch (error) {
           res.status(500).json({ msg: "error updating data" });
         }

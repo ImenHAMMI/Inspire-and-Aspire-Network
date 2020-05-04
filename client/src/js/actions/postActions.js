@@ -78,7 +78,7 @@ export const likePost = (id) => async (dispatch) => {
       type: LIKE_SUCCESS,
       payload: putRes.data,
     });
-    getPosts();
+    // getPosts();
   } catch (error) {
     dispatch({ type: LIKE_FAIL, payload: error.response.data.errors });
   }

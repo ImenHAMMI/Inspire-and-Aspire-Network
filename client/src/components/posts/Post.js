@@ -62,9 +62,8 @@ class Post extends React.Component {
       avatarsLikesImg,
     } = this.props.postUser;
     const { profile, isLoading, post } = this.props;
-    const isLiked = likedBy.indexOf(profile.id);
+    const isLiked = likedBy.findIndex((el) => el._id === profile.id); //likedBy.indexOf(profile.id);
     const base64Flag = "data:image/jpeg;base64,";
-    // console.log(this.props.postUser.avatarsLikesImg);
 
     return (
       <div className="Card">
