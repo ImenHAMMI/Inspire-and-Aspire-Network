@@ -43,7 +43,6 @@ module.exports = userController = {
         email,
         password,
         name,
-        avatar: "",
         role: "user",
       });
 
@@ -100,7 +99,7 @@ module.exports = userController = {
 
       if (searchRes) {
         for (let i = 0; i < searchRes.length; i++) {
-          const avatarsLikes = [];
+          const avatarsLikesImg = [];
           const { title, quote, text, date, likedBy } = searchRes[i];
           for (let k = 0; k < likedBy.length; k++) {
             const searchResImgProfile = await ImgProfile.findOne({
@@ -110,8 +109,8 @@ module.exports = userController = {
               .sort({
                 createdAt: "desc",
               });
-            if (searchResImgProfile) avatarsLikes.push(searchResImgProfile);
-            else avatarsLikes.push(likedBy[k].name);
+            if (searchResImgProfile) avatarsLikesImg.push(searchResImgProfile);
+            else avatarsLikesImg.push(likedBy[k].name);
           }
           posts.push({
             name: name,
@@ -120,7 +119,7 @@ module.exports = userController = {
             text: text,
             date: date,
             likedBy: likedBy,
-            avatarsLikesImg: avatarsLikes,
+            avatarsLikesImg,
           });
         }
       }
@@ -144,8 +143,23 @@ module.exports = userController = {
   getAllUsers: async (req, res) => {
     try {
       const searchRes = await User.find();
-      if (searchRes) return res.status(201).json(searchRes);
-      //   .sort({ date: -1 })
+      if (searchRes) {
+        const avatarsLikesImg = [];
+        for (let index = 0; index < searchRes.length; index++) {
+          const { _id, name } = searchRes[index];
+          const searchResImgProfile = await ImgProfile.findOne({
+            avatar: _id,
+          })
+            .populate({ path: "avatar", select: "name", model: User })
+            .sort({
+              createdAt: "desc",
+            });
+          if (searchResImgProfile) avatarsLikesImg.push(searchResImgProfile);
+          else avatarsLikesImg.push({ avatar: { _id, name } });
+        }
+
+        return res.status(201).json(avatarsLikesImg);
+      }
     } catch (err) {
       res.status(500).json({ errors: err });
     }
@@ -165,8 +179,8 @@ module.exports = userController = {
 
         if (searchResPost) {
           for (let i = 0; i < searchResPost.length; i++) {
-            const avatarsLikes = [];
-            const { title, quote, text, date, likedBy } = searchResPost[i];
+            const avatarsLikesImg = [];
+            const { _id, title, quote, text, date, likedBy } = searchResPost[i];
             for (let k = 0; k < likedBy.length; k++) {
               const searchResImgProfile = await ImgProfile.findOne({
                 avatar: likedBy[k]._id,
@@ -175,17 +189,19 @@ module.exports = userController = {
                 .sort({
                   createdAt: "desc",
                 });
-              if (searchResImgProfile) avatarsLikes.push(searchResImgProfile);
-              else avatarsLikes.push(likedBy[k].name);
+              if (searchResImgProfile)
+                avatarsLikesImg.push(searchResImgProfile);
+              else avatarsLikesImg.push(likedBy[k].name);
             }
             posts.push({
-              name: name,
-              title: title,
-              quote: quote,
-              text: text,
-              date: date,
-              likedBy: likedBy,
-              avatarsLikesImg: avatarsLikes,
+              _id,
+              name,
+              title,
+              quote,
+              text,
+              date,
+              likedBy,
+              avatarsLikesImg,
             });
           }
         }
@@ -200,7 +216,7 @@ module.exports = userController = {
           avatar: searchResImg,
           followers,
           following,
-          posts: posts,
+          posts,
         });
       }
     } catch (err) {

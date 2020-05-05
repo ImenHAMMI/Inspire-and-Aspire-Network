@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -14,6 +13,7 @@ class PostList extends Component {
   }
   render() {
     const { posts, isLoading } = this.props;
+    // console.log(posts);
     return isLoading ? (
       <CircularProgress style={{ marginTop: "17%", marginLeft: "48%" }} />
     ) : (
@@ -27,7 +27,7 @@ class PostList extends Component {
 }
 const mapSTP = (state) => ({
   posts: state.postReducer.posts,
-  isLoading: state.postReducer.isLoading,
+  isLoading: state.postReducer.isLoadingPosts,
 });
 export default connect(mapSTP, {
   getPosts,

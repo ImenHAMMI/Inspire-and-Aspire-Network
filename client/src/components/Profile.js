@@ -89,12 +89,12 @@ class Profile extends React.Component {
               className="avatarProfile"
               style={{ width: 170, height: 170 }}
             ></Avatar>
-          ) : profile.avatar ? (
+          ) : profileUser.avatar ? (
             <Avatar
               alt={profileUser.name}
               src={
                 base64Flag +
-                this.arrayBufferToBase64(profile.avatar.img.data.data)
+                this.arrayBufferToBase64(profileUser.avatar.img.data.data)
               }
               className="avatarProfile"
               style={{ width: 170, height: 170 }}
@@ -134,14 +134,14 @@ class Profile extends React.Component {
               <span>{profileUser.following.length} following</span>
             </div>
             <h3>Bio : </h3>
+            {profile.id !== profileUser.id ? (
+              <button onClick={this.addFollow}>follow</button>
+            ) : null}
           </div>
         </div>
 
-        {profile.id !== profileUser.id ? (
-          <button onClick={this.addFollow}>follow</button>
-        ) : null}
         {profileUser.posts.map((post, key) => (
-          <Post key={key} postUser={post} name={profileUser.name} />
+          <Post key={key} postUser={post} />
         ))}
         <ModalPost open={this.props.open} handleOpen={this.props.handleOpen} />
       </div>

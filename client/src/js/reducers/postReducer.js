@@ -11,13 +11,11 @@ import {
   UNLIKE,
   UNLIKE_SUCCESS,
   UNLIKE_FAIL,
-  GETAVATARSLIKES,
-  GETAVATARSLIKES_SUCCESS,
-  GETAVATARSLIKES_FAIL,
 } from "../constants/action-types";
 
 const initialState = {
   isLoading: false,
+  isLoadingPosts: false,
   posts: [],
   post: null,
   Newpost: null,
@@ -34,11 +32,11 @@ const postReducer = (state = initialState, { type, payload }) => {
     case ADDPOST_FAIL:
       return { ...state, isLoading: false, errors: payload };
     case GET_POSTS:
-      return { ...state, isLoading: true };
+      return { ...state, isLoadingPosts: true };
     case GETPOSTS_SUCCESS:
-      return { ...state, isLoading: false, posts: payload };
+      return { ...state, isLoadingPosts: false, posts: payload };
     case GETPOSTS_FAIL:
-      return { ...state, isLoading: false, errors: payload };
+      return { ...state, isLoadingPosts: false, errors: payload };
     case LIKE:
       return { ...state, isLoading: true };
     case LIKE_SUCCESS:
@@ -59,12 +57,7 @@ const postReducer = (state = initialState, { type, payload }) => {
       };
     case UNLIKE_FAIL:
       return { ...state, isLoading: false, errors: payload };
-    case GETAVATARSLIKES:
-      return { ...state, isLoading: true };
-    case GETAVATARSLIKES_SUCCESS:
-      return { ...state, isLoading: false, avatarsLikes: payload };
-    case GETAVATARSLIKES_FAIL:
-      return { ...state, isLoading: false, errors: payload };
+
     default:
       return state;
   }

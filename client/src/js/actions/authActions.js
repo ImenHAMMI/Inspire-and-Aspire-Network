@@ -84,8 +84,13 @@ export const getAllUsers = () => async (dispatch) => {
   dispatch({
     type: GET_USERS,
   });
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
   try {
-    const searchRes = await axios.get("/users");
+    const searchRes = await axios.get("/users", config);
     dispatch({
       type: GETUSERS_SUCCESS,
       payload: searchRes.data,

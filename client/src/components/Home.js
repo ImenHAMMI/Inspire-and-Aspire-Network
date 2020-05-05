@@ -34,7 +34,7 @@ class Home extends React.Component {
   };
 
   componentDidMount() {
-    this.props.isAuthorized();
+    if (!this.props.isAuth) this.props.isAuthorized();
   }
 
   handleProfileMenuOpen = (e) => {
@@ -88,9 +88,8 @@ class Home extends React.Component {
     return isLoading ? (
       <CircularProgress style={{ marginTop: "17%", marginLeft: "48%" }} />
     ) : !isAuth ? (
-      <CircularProgress style={{ marginTop: "17%", marginLeft: "48%" }} />
+      <Redirect to="/login" />
     ) : (
-      // <Redirect to="/login" />
       <div>
         <div className="Grow">
           <AppBar position="static">
@@ -121,7 +120,7 @@ class Home extends React.Component {
               </div> */}
               <div className="Grow" />
               <div className="sectionDesktop">
-                <Link to={`/profile${profile.id}`} className="Link">
+                <Link to={`/profile${profile.id}`}>
                   {profile.avatar ? (
                     <Avatar
                       alt={profile.name}
@@ -169,9 +168,9 @@ class Home extends React.Component {
 
           {renderMenu}
         </div>
-        <div>
+        <div className="Container">
           <PostList />
-          {/* <UserList /> */}
+          <UserList />
         </div>
       </div>
     );

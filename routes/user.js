@@ -23,7 +23,7 @@ router.get("/current", isAuth(), userController.current);
 // @route  GET user/current
 // @desc   Return all users
 //@access  Private
-router.get("/users", userController.getAllUsers);
+router.get("/users", isAuth(), userController.getAllUsers);
 
 // @route  GET user/profile:id
 // @desc   Return profile by id

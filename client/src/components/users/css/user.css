@@ -1,0 +1,14 @@
+.User {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  cursor: pointer;
+  /* border: 1px solid black; */
+}
+.User p {
+  padding-left: 5%;
+  color: black;
+}
+a {
+  text-decoration: none;
+}

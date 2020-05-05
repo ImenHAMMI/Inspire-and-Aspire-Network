@@ -244,24 +244,4 @@ module.exports = postController = {
     }
   },
   addComment: async (req, res) => {},
-  // getAvatarsLikePost: async (req, res) => {
-  //   const { id } = req.params;
-  //   console.log(req.params);
-  //   const searchResUser = null;
-  //   const avatarsLikes = [];
-  //   try {
-  //     const searchRes = await Post.findOne({ _id: id });
-  //     console.log(searchRes);
-  //     if (searchRes)
-  //       for (let i = 0; i < searchRes.likedBy.length(); i++) {
-  //         searchResUser = await User.findOne({ _id: searchRes.likedBy[i] });
-  //         console.log(searchResUser);
-  //         if (searchResUser)
-  //           avatarsLikes.push(searchResUser.name, searchResUser.avatar);
-  //       }
-  //     return res.status(200).json(avatarsLikes);
-  //   } catch (err) {
-  //     res.status(500).json({ errors: err });
-  //   }
-  // },
 };

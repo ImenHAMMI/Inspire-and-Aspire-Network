@@ -48,12 +48,7 @@ export const UNLIKE = "UNLIKE";
 export const UNLIKE_SUCCESS = "UNLIKE_SUCCESS";
 export const UNLIKE_FAIL = "UNLIKE_FAIL";
 
-//getAvatarsLike
-export const GETAVATARSLIKES = "GETAVATARSLIKES";
-export const GETAVATARSLIKES_SUCCESS = "GETAVATARSLIKES_SUCCESS";
-export const GETAVATARSLIKES_FAIL = "GETAVATARSLIKES_FAIL";
-
-//editAvatar
+//add Img Profile
 export const ADD_IMG = "ADD_IMG";
 export const ADDIMG_SUCCESS = "ADDIMG_SUCCESS";
 export const ADDIMG_FAIL = "ADDIMG_FAIL";

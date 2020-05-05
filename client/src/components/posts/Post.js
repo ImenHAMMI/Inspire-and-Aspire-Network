@@ -22,16 +22,9 @@ import ShareIcon from "@material-ui/icons/Share";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 
-import {
-  likePost,
-  unLikePost,
-  // getAvatarsLike,
-} from "../../js/actions/postActions";
+import { likePost, unLikePost } from "../../js/actions/postActions";
 import "./css/post.css";
-// import photo from "../../gallery/IMG_20190319_151824.jpg";
 import idea3 from "../../gallery/boy-1454054_640.png";
-
-// import { getProfileByID } from "../js/actions/authActions";
 
 class Post extends React.Component {
   addLike = (e) => {
@@ -52,6 +45,7 @@ class Post extends React.Component {
     return window.btoa(binary);
   }
   render() {
+    const { profile, postUser } = this.props;
     const {
       name,
       title,
@@ -60,9 +54,10 @@ class Post extends React.Component {
       date,
       likedBy,
       avatarsLikesImg,
-    } = this.props.postUser;
-    const { profile, isLoading, post } = this.props;
-    const isLiked = likedBy.findIndex((el) => el._id === profile.id); //likedBy.indexOf(profile.id);
+    } = postUser;
+    // console.log(postUser.likedBy);
+    const isLiked = likedBy.findIndex((el) => el._id === profile.id);
+    // console.log(isLiked);
     const base64Flag = "data:image/jpeg;base64,";
 
     return (
@@ -172,10 +167,7 @@ class Post extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  post: state.postReducer.post,
-  isLoading: state.postReducer.isLoading,
   profile: state.authReducer.profile,
-  avatarsLikes: state.postReducer.avatarsLikes,
 });
 export default connect(mapStateToProps, {
   likePost,

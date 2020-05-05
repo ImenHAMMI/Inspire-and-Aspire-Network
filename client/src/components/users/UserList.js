@@ -1,24 +1,22 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+
+import { getAllUsers } from "../../js/actions/authActions";
 
 import User from "./User";
-import { getAllUsers } from "../../js/actions/authActions";
+import "./css/userList.css";
+
 class UserList extends Component {
   componentDidMount() {
     this.props.getAllUsers();
   }
   render() {
     const { users, profile } = this.props;
+    // console.log(users);
     return (
-      <div>
+      <div className="userList">
         {users.map((user, key) =>
-          user._id !== profile.id ? (
-            <div key={key}>
-              <p>{user.name}</p>
-              <Link to={`/profile${user._id}`}>view profile</Link>
-            </div>
-          ) : null
+          user._id !== profile.id ? <User key={key} user={user} /> : null
         )}
       </div>
     );

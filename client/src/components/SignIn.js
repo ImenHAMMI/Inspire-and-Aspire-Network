@@ -39,7 +39,6 @@ class SignIn extends React.Component {
   };
   render() {
     const { isLoading } = this.props;
-    console.log(localStorage.getItem("token"));
     return isLoading ? (
       <CircularProgress style={{ marginTop: "17%", marginLeft: "48%" }} />
     ) : localStorage.getItem("token") ? (
@@ -100,7 +99,7 @@ class SignIn extends React.Component {
             </div>
           </div>
         </div> */}
-          <Link to="/register" className="link">
+          <Link to="/register">
             <button type="button" className="submit">
               Sign Up
             </button>

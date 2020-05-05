@@ -38,6 +38,11 @@ button {
   border: 1px solid black;
 }
 
-.Link {
+a {
   text-decoration: none;
+}
+.Container {
+  display: flex;
+  justify-content: space-between;
+  margin: 1% 2%;
 }

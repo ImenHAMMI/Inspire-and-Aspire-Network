@@ -12,9 +12,6 @@ import {
   UNLIKE,
   UNLIKE_SUCCESS,
   UNLIKE_FAIL,
-  GETAVATARSLIKES,
-  GETAVATARSLIKES_SUCCESS,
-  GETAVATARSLIKES_FAIL,
 } from "../constants/action-types";
 
 //get Posts By User
@@ -107,22 +104,22 @@ export const unLikePost = (id) => async (dispatch) => {
 };
 
 //getAvatarsLike
-export const getAvatarsLike = (id) => async (dispatch) => {
-  dispatch({
-    type: GETAVATARSLIKES,
-  });
+// export const getAvatarsLike = (id) => async (dispatch) => {
+//   dispatch({
+//     type: GETAVATARSLIKES,
+//   });
 
-  try {
-    const getRes = await axios.get(`/getAvatarsLike${id}`);
-    // console.log(getRes);
-    dispatch({
-      type: GETAVATARSLIKES_SUCCESS,
-      payload: getRes.data,
-    });
-  } catch (error) {
-    dispatch({
-      type: GETAVATARSLIKES_FAIL,
-      payload: error.response.data.errors,
-    });
-  }
-};
+//   try {
+//     const getRes = await axios.get(`/getAvatarsLike${id}`);
+//     // console.log(getRes);
+//     dispatch({
+//       type: GETAVATARSLIKES_SUCCESS,
+//       payload: getRes.data,
+//     });
+//   } catch (error) {
+//     dispatch({
+//       type: GETAVATARSLIKES_FAIL,
+//       payload: error.response.data.errors,
+//     });
+//   }
+// };

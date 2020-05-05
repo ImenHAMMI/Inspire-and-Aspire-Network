@@ -23,11 +23,18 @@ import {
   ADD_IMG,
   ADDIMG_SUCCESS,
   ADDIMG_FAIL,
+  LIKE,
+  LIKE_SUCCESS,
+  LIKE_FAIL,
+  UNLIKE,
+  UNLIKE_FAIL,
+  UNLIKE_SUCCESS,
 } from "../constants/action-types";
 
 const initialState = {
   isLoading: false,
   loadingProfile: false,
+  loadingUsers: false,
   user: null,
   errors: [],
   isAuth: false,
@@ -58,11 +65,11 @@ const authReducer = (state = initialState, { type, payload }) => {
     case AUTH_SUCCESS:
       return { ...state, isLoading: false, isAuth: true, profile: payload };
     case GET_USERS:
-      return { ...state, isLoading: true };
+      return { ...state, loadingUsers: true };
     case GETUSERS_FAIL:
-      return { ...state, isLoading: false, errors: payload };
+      return { ...state, loadingUsers: false, errors: payload };
     case GETUSERS_SUCCESS:
-      return { ...state, isLoading: false, users: payload };
+      return { ...state, loadingUsers: false, users: payload };
     case GET_PROFILE:
       return { ...state, loadingProfile: true };
     case GETPROFILE_FAIL:
@@ -92,6 +99,37 @@ const authReducer = (state = initialState, { type, payload }) => {
       return { ...state, isLoading: false, imgProfile: payload };
     case EDITAVATAR_FAIL:
       return { ...state, isLoading: false, errors: payload };
+    case LIKE:
+      return { ...state, isLoading: true };
+    case LIKE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        profileUser: {
+          ...state.profileUser,
+          posts: state.profileUser.posts.map((p) =>
+            p._id === payload._id ? payload : p
+          ),
+        },
+      };
+    case LIKE_FAIL:
+      return { ...state, isLoading: false, errors: payload };
+    case UNLIKE:
+      return { ...state, isLoading: true };
+    case UNLIKE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        profileUser: {
+          ...state.profileUser,
+          posts: state.profileUser.posts.map((p) =>
+            p._id === payload._id ? payload : p
+          ),
+        },
+      };
+    case UNLIKE_FAIL:
+      return { ...state, isLoading: false, errors: payload };
+
     default:
       return state;
   }
