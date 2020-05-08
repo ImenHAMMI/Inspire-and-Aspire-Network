@@ -22,7 +22,13 @@ import ShareIcon from "@material-ui/icons/Share";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 
-import { likePost, unLikePost } from "../../js/actions/postActions";
+import {
+  likePost,
+  unLikePost,
+  editPost,
+  deletePost,
+} from "../../js/actions/postActions";
+import ModalEditPost from "../ModalEditPost";
 import "./css/post.css";
 import idea3 from "../../gallery/boy-1454054_640.png";
 
@@ -45,9 +51,10 @@ class Post extends React.Component {
     return window.btoa(binary);
   }
   render() {
-    const { profile, postUser } = this.props;
+    const { profile, postUser, isLoading } = this.props;
     const {
-      name,
+      _id,
+      postedBy,
       title,
       text,
       quote,
@@ -55,7 +62,7 @@ class Post extends React.Component {
       likedBy,
       avatarsLikesImg,
     } = postUser;
-    // console.log(postUser.likedBy);
+    // console.log(postUser);
     const isLiked = likedBy.findIndex((el) => el._id === profile.id);
     // console.log(isLiked);
     const base64Flag = "data:image/jpeg;base64,";
@@ -108,7 +115,7 @@ class Post extends React.Component {
               {text}
             </Typography>
 
-            <CardHeader title={name} subheader={date.substr(0, 10)} />
+            <CardHeader title={postedBy.name} subheader={date.substr(0, 10)} />
             <CardActions disableSpacing>
               {isLiked < 0 ? (
                 <IconButton
@@ -133,6 +140,15 @@ class Post extends React.Component {
               <IconButton aria-label="share">
                 <ShareIcon />
               </IconButton>
+              {postedBy._id === profile.id ? (
+                <div>
+                  <ModalEditPost postUser={postUser} />
+                  {/* <button onClick={() => this.props.editPost(_id)}>Edit</button> */}
+                  <button onClick={() => this.props.deletePost(_id)}>
+                    Delete
+                  </button>
+                </div>
+              ) : null}
             </CardActions>
 
             {/* action={ */}
@@ -144,19 +160,22 @@ class Post extends React.Component {
               //   subheader={date}
               // /> */}
             <AvatarGroup max={5}>
-              {avatarsLikesImg.map((el, key) =>
-                el.img ? (
-                  <Avatar
-                    key={key}
-                    alt="imgProfile"
-                    src={
-                      base64Flag + this.arrayBufferToBase64(el.img.data.data)
-                    }
-                  />
-                ) : (
-                  <Avatar key={key}>{el.substr(0, 1).toUpperCase()}</Avatar>
-                )
-              )}
+              {avatarsLikesImg // case adding new post
+                ? avatarsLikesImg.map((el, key) =>
+                    el.img ? (
+                      <Avatar
+                        key={key}
+                        alt="imgProfile"
+                        src={
+                          base64Flag +
+                          this.arrayBufferToBase64(el.img.data.data)
+                        }
+                      />
+                    ) : (
+                      <Avatar key={key}>{el.substr(0, 1).toUpperCase()}</Avatar>
+                    )
+                  )
+                : null}
               }
             </AvatarGroup>
           </div>
@@ -172,4 +191,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   likePost,
   unLikePost,
+  editPost,
+  deletePost,
 })(Post);

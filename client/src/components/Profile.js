@@ -19,6 +19,8 @@ import {
   editAvatar,
 } from "../js/actions/authActions";
 
+import { getPostsByID } from "../js/actions/postActions";
+
 import Post from "./posts/Post";
 import ModalPost from "./ModalPost";
 import ModalImg from "./ModalImg";
@@ -29,10 +31,11 @@ class Profile extends React.Component {
     file: null,
     open: false,
   };
-  componentWillMount() {
+  componentDidMount() {
     const id = this.props.match.params.id;
-    this.props.isAuthorized();
+    if (!this.props.isAuth) this.props.isAuthorized();
     this.props.getProfileByID(id);
+    this.props.getPostsByID(id);
   }
 
   handleOpen = () => {
@@ -69,7 +72,14 @@ class Profile extends React.Component {
   };
 
   render() {
-    const { isAuth, isLoading, profile, profileUser, imgProfile } = this.props;
+    const {
+      isAuth,
+      isLoading,
+      profile,
+      profileUser,
+      imgProfile,
+      posts,
+    } = this.props;
     // console.log(imgProfile);
     const base64Flag = "data:image/jpeg;base64,";
 
@@ -129,7 +139,7 @@ class Profile extends React.Component {
           <div className="InfoProfile">
             <h1>{profileUser.name}</h1>
             <div>
-              <span>{profileUser.posts.length} post</span>|
+              <span>{posts.length} post</span>|
               <span>{profileUser.followers.length} followers</span>|
               <span>{profileUser.following.length} following</span>
             </div>
@@ -140,10 +150,10 @@ class Profile extends React.Component {
           </div>
         </div>
 
-        {profileUser.posts.map((post, key) => (
+        {posts.map((post, key) => (
           <Post key={key} postUser={post} />
         ))}
-        <ModalPost open={this.props.open} handleOpen={this.props.handleOpen} />
+        {profile.id === profileUser.id ? <ModalPost /> : null}
       </div>
     );
   }
@@ -155,6 +165,7 @@ const mapStateToProps = (state) => ({
   isLoading: state.authReducer.loadingProfile,
   profileUser: state.authReducer.profileUser,
   imgProfile: state.authReducer.imgProfile,
+  posts: state.postReducer.posts,
 });
 export default connect(mapStateToProps, {
   isAuthorized,
@@ -162,4 +173,5 @@ export default connect(mapStateToProps, {
   follow,
   uploadImg,
   editAvatar,
+  getPostsByID,
 })(Profile);

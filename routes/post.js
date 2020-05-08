@@ -10,10 +10,25 @@ const isAuth = require("../middlewares/passport-setup");
 // @access  Private
 router.get("/posts", isAuth(), postController.getPosts);
 
+// @route   GET /posts
+// @desc    Get posts By Id
+// @access  Private
+router.get("/posts:id", isAuth(), postController.getPostsById);
+
 // @route   POST /post
 // @desc    Create post
 // @access  Private
 router.post("/addpost", isAuth(), postController.addPost);
+
+// @route   POST /post
+// @desc    Edit post
+// @access  Private
+router.put("/editpost:id", isAuth(), postController.editPost);
+
+// @route   POST /post
+// @desc    Delete post
+// @access  Private
+router.delete("/post:id", isAuth(), postController.deletePost);
 
 // @route   POST /post/like/:id
 // @desc    Like post

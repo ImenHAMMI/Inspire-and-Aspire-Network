@@ -9,15 +9,6 @@ import Home from "./components/Home";
 import "./App.css";
 
 class App extends React.Component {
-  state = {
-    open: false,
-  };
-
-  handleOpen = () => {
-    this.setState({
-      open: !this.state.open,
-    });
-  };
   render() {
     return (
       <div className="App">
@@ -26,17 +17,7 @@ class App extends React.Component {
             <Route exact path="/register" component={SignUp} />
             <Route exact path="/login" component={SignIn} />
             <Route exact path="/" component={Home} />
-            <Route
-              exact
-              path="/profile:id"
-              component={(props) => (
-                <Profile
-                  {...props}
-                  open={this.state.open}
-                  handleOpen={this.handleOpen}
-                />
-              )}
-            />
+            <Route exact path="/profile:id" component={Profile} />
           </Switch>
         </BrowserRouter>
       </div>

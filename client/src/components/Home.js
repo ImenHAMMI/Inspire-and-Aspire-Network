@@ -25,6 +25,7 @@ import { isAuthorized } from "../js/actions/authActions";
 
 import PostList from "./posts/PostList";
 import UserList from "./users/UserList";
+import ModalPost from "./ModalPost";
 import "../css/home.css";
 
 class Home extends React.Component {
@@ -172,6 +173,7 @@ class Home extends React.Component {
           <PostList />
           <UserList />
         </div>
+        <ModalPost />
       </div>
     );
   }

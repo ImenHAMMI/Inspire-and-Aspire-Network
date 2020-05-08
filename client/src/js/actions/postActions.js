@@ -12,6 +12,15 @@ import {
   UNLIKE,
   UNLIKE_SUCCESS,
   UNLIKE_FAIL,
+  EDIT_POST,
+  EDITPOST_SUCCESS,
+  EDITPOST_FAIL,
+  DELETE_POST,
+  DELETEPOST_SUCCESS,
+  DELETEPOST_FAIL,
+  GET_POSTS_BY_ID,
+  GETPOSTSBYID_SUCCESS,
+  GETPOSTSBYID_FAIL,
 } from "../constants/action-types";
 
 //get Posts By User
@@ -36,6 +45,28 @@ export const getPosts = () => async (dispatch) => {
   }
 };
 
+//get Posts By Id profile
+export const getPostsByID = (id) => async (dispatch) => {
+  dispatch({
+    type: GET_POSTS_BY_ID,
+  });
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+  try {
+    const searchRes = await axios.get(`/posts${id}`, config);
+    console.log(searchRes);
+    dispatch({
+      type: GETPOSTSBYID_SUCCESS,
+      payload: searchRes.data,
+    });
+  } catch (error) {
+    dispatch({ type: GETPOSTSBYID_FAIL, payload: error.response.data.errors });
+  }
+};
+
 // add post
 export const addPost = (post) => async (dispatch) => {
   dispatch({
@@ -49,12 +80,63 @@ export const addPost = (post) => async (dispatch) => {
 
   try {
     const addRes = await axios.post("/addpost", post, config);
+    console.log(addRes);
     dispatch({
       type: ADDPOST_SUCCESS,
       payload: addRes.data,
     });
   } catch (error) {
     dispatch({ type: ADDPOST_FAIL, payload: error.response.data.errors });
+  }
+};
+
+//Edit post
+export const editPost = (id, updatePost) => async (dispatch) => {
+  dispatch({
+    type: EDIT_POST,
+  });
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+  try {
+    const updateRes = await axios.put(`/editpost${id}`, updatePost, config);
+
+    dispatch({
+      type: EDITPOST_SUCCESS,
+      payload: updateRes.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: EDITPOST_FAIL,
+      payload: error.response.data.errors,
+    });
+  }
+};
+
+//Delete post
+export const deletePost = (id) => async (dispatch) => {
+  dispatch({
+    type: DELETE_POST,
+  });
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+  try {
+    const deleteRes = await axios.delete(`/post${id}`, config);
+    // console.log(deleteRes);
+    dispatch({
+      type: DELETEPOST_SUCCESS,
+      payload: deleteRes.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETEPOST_FAIL,
+      payload: error.response.data.errors,
+    });
   }
 };
 
@@ -102,24 +184,3 @@ export const unLikePost = (id) => async (dispatch) => {
     dispatch({ type: UNLIKE_FAIL, payload: error.response.data.errors });
   }
 };
-
-//getAvatarsLike
-// export const getAvatarsLike = (id) => async (dispatch) => {
-//   dispatch({
-//     type: GETAVATARSLIKES,
-//   });
-
-//   try {
-//     const getRes = await axios.get(`/getAvatarsLike${id}`);
-//     // console.log(getRes);
-//     dispatch({
-//       type: GETAVATARSLIKES_SUCCESS,
-//       payload: getRes.data,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: GETAVATARSLIKES_FAIL,
-//       payload: error.response.data.errors,
-//     });
-//   }
-// };

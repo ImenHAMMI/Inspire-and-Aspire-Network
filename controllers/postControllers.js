@@ -42,7 +42,7 @@ module.exports = postController = {
 
             posts.push({
               _id,
-              name: postedBy.name,
+              postedBy,
               title,
               quote,
               text,
@@ -86,7 +86,7 @@ module.exports = postController = {
 
             posts.push({
               _id,
-              name: postedBy.name,
+              postedBy,
               title,
               quote,
               text,
@@ -104,8 +104,63 @@ module.exports = postController = {
       res.status(500).json({ errors: err });
     }
   },
+  getPostsById: async (req, res) => {
+    const posts = [];
+    const { id } = req.params;
+    try {
+      const searchRes = await User.findOne({ _id: id });
+      if (searchRes) {
+        const searchResPost = await Post.find({ postedBy: id }).populate({
+          path: "postedBy likedBy",
+          select: "name",
+          model: User,
+        });
+        if (searchResPost) {
+          for (let j = 0; j < searchResPost.length; j++) {
+            const avatarsLikesImg = [];
+            const {
+              _id,
+              postedBy,
+              title,
+              quote,
+              text,
+              date,
+              likedBy,
+            } = searchResPost[j];
+            for (let k = 0; k < likedBy.length; k++) {
+              const searchResImgProfile = await Imgprofile.findOne({
+                avatar: likedBy[k]._id,
+              })
+                .populate({ path: "avatar", select: "name", model: User })
+                .sort({
+                  createdAt: "desc",
+                });
+              if (searchResImgProfile)
+                avatarsLikesImg.push(searchResImgProfile);
+              else avatarsLikesImg.push(likedBy[k].name);
+            }
+
+            posts.push({
+              _id,
+              postedBy,
+              title,
+              quote,
+              text,
+              date,
+              likedBy,
+              avatarsLikesImg,
+            });
+          }
+        }
+        return res.status(201).json(posts.sort((a, b) => b.date - a.date));
+      }
+    } catch (err) {
+      res.status(500).json({ errors: err });
+    }
+  },
   addPost: async (req, res) => {
     const { title, text, quote } = req.body;
+    const { id, name } = req.user;
 
     const newPost = new Post({
       title,
@@ -115,9 +170,44 @@ module.exports = postController = {
     });
     try {
       const addRes = await newPost.save();
-      res.status(200).json(addRes);
+      const { _id, date, likedBy } = addRes;
+
+      res.status(200).json({
+        _id,
+        title,
+        text,
+        quote,
+        date,
+        likedBy,
+        postedBy: { _id: id, name: name },
+      });
     } catch (err) {
-      res.status(500).json({ errors: "errrroooor" });
+      res.status(500).json({ errors: err });
+    }
+  },
+  editPost: async (req, res) => {
+    const { id } = req.params;
+    const { title, text, quote } = req.body;
+
+    try {
+      const updateRes = await Post.findByIdAndUpdate(
+        { _id: id },
+        { $set: { title, text, quote } },
+        { new: true }
+      );
+
+      res.status(201).json(updateRes);
+    } catch (err) {
+      res.status(500).json({ errors: err });
+    }
+  },
+  deletePost: async (req, res) => {
+    const { id } = req.params;
+    try {
+      const updateRes = await Post.findOneAndDelete({ _id: id });
+      res.status(201).json(updateRes);
+    } catch (err) {
+      res.status(500).json({ errors: err });
     }
   },
   likePost: async (req, res) => {
@@ -163,7 +253,7 @@ module.exports = postController = {
 
           return res.status(200).json({
             _id,
-            name: postedBy.name,
+            postedBy,
             title,
             quote,
             text,
@@ -224,7 +314,7 @@ module.exports = postController = {
 
           return res.status(200).json({
             _id,
-            name: postedBy.name,
+            postedBy,
             title,
             quote,
             text,

@@ -11,45 +11,40 @@ import EmailRoundedIcon from "@material-ui/icons/EmailRounded";
 import PersonRoundedIcon from "@material-ui/icons/PersonRounded";
 import FaceRoundedIcon from "@material-ui/icons/FaceRounded";
 
-import { addPost } from "../js/actions/postActions";
+import { editPost } from "../js/actions/postActions";
 import "../css/modalPost.css";
 
 class ModalPost extends React.Component {
   state = {
-    open: false,
     title: "",
     text: "",
     quote: "",
+    open: false,
   };
 
   handleOpen = () => {
+    const { title, text, quote } = this.props.postUser;
     this.setState({
       open: !this.state.open,
-      title: "",
-      quote: "",
-      text: "",
+      title: title,
+      text: text,
+      quote: quote,
     });
   };
+
   handleChange = (e) => this.setState({ [e.target.name]: e.target.value });
   onSubmit = () => {
     // const isFilled = this.state.text && this.state.Mobile && this.state.EMail;
-    // console.log(this.state);
     // if (isFilled) {
-    this.props.addPost(this.state);
+    this.props.editPost(this.props.postUser._id, this.state);
     this.handleOpen();
   };
 
   render() {
     return (
       <div>
-        <AddRoundedIcon
-          className="IconAction"
-          onClick={this.handleOpen}
-          style={{
-            color: "rgba(0, 0, 0, 0.54)",
-            fontSize: 60,
-          }}
-        />
+        <button onClick={this.handleOpen}>Edit</button>
+
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -101,9 +96,11 @@ class ModalPost extends React.Component {
                     onChange={this.handleChange}
                   />
                 </div> */}
+
                 <div className="btn-add" onClick={this.onSubmit}>
-                  {/* <PersonAddRoundedIcon className="Icon" /> */}
-                  <span>Add</span>
+                  <PersonAddRoundedIcon className="Icon" />
+                  {/* <i className="fas fa-user-edit"></i> */}
+                  <span>Edit</span>
                 </div>
               </form>
             </div>
@@ -115,5 +112,5 @@ class ModalPost extends React.Component {
 }
 
 export default connect(null, {
-  addPost,
+  editPost,
 })(ModalPost);

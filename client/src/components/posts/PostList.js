@@ -27,7 +27,7 @@ class PostList extends Component {
 }
 const mapSTP = (state) => ({
   posts: state.postReducer.posts,
-  isLoading: state.postReducer.isLoadingPosts,
+  isLoading: state.postReducer.isLoading,
 });
 export default connect(mapSTP, {
   getPosts,

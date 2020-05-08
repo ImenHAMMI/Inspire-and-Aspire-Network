@@ -33,10 +33,25 @@ export const GET_POSTS = "GET_POSTS";
 export const GETPOSTS_SUCCESS = "GETPOSTS_SUCCESS";
 export const GETPOSTS_FAIL = "GETPOSTS_FAIL";
 
+//Get Posts By Id
+export const GET_POSTS_BY_ID = "GET_POSTS_BY_ID";
+export const GETPOSTSBYID_SUCCESS = "GETPOSTSBYID_SUCCESS";
+export const GETPOSTSBYID_FAIL = "GETPOSTSBYID_FAIL";
+
 //Add Post
 export const ADD_POST = "ADD_POST";
 export const ADDPOST_SUCCESS = "ADDPOST_SUCCESS";
 export const ADDPOST_FAIL = "ADDPOST_FAIL";
+
+//Edit Post
+export const EDIT_POST = "EDIT_POST";
+export const EDITPOST_SUCCESS = "EDITPOST_SUCCESS";
+export const EDITPOST_FAIL = "EDITPOST_FAIL";
+
+//Delete Post
+export const DELETE_POST = "DELETE_POST";
+export const DELETEPOST_SUCCESS = "DELETEPOST_SUCCESS";
+export const DELETEPOST_FAIL = "DELETEPOST_FAIL";
 
 //Like Post
 export const LIKE = "LIKE";
