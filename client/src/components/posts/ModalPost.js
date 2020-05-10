@@ -11,8 +11,8 @@ import EmailRoundedIcon from "@material-ui/icons/EmailRounded";
 import PersonRoundedIcon from "@material-ui/icons/PersonRounded";
 import FaceRoundedIcon from "@material-ui/icons/FaceRounded";
 
-import { addPost } from "../js/actions/postActions";
-import "../css/modalPost.css";
+import { addPost } from "../../store/actions/postActions";
+import "./css/modalPost.css";
 
 class ModalPost extends React.Component {
   state = {

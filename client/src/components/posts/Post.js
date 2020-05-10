@@ -27,8 +27,11 @@ import {
   unLikePost,
   editPost,
   deletePost,
-} from "../../js/actions/postActions";
-import ModalEditPost from "../ModalEditPost";
+} from "../../store/actions/postActions";
+
+import ModalEditPost from "./ModalEditPost";
+import AddComment from "../comments/AddComment";
+import CommentList from "../comments/CommentList";
 import "./css/post.css";
 import idea3 from "../../gallery/boy-1454054_640.png";
 
@@ -51,7 +54,7 @@ class Post extends React.Component {
     return window.btoa(binary);
   }
   render() {
-    const { profile, postUser, isLoading } = this.props;
+    const { profile, postUser } = this.props;
     const {
       _id,
       postedBy,
@@ -60,6 +63,7 @@ class Post extends React.Component {
       quote,
       date,
       likedBy,
+      comments,
       avatarsLikesImg,
     } = postUser;
     // console.log(postUser);
@@ -178,6 +182,8 @@ class Post extends React.Component {
                 : null}
               }
             </AvatarGroup>
+            <CommentList comments={comments} />
+            <AddComment id={_id} />
           </div>
         </div>
       </div>

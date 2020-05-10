@@ -17,14 +17,14 @@ import {
   follow,
   uploadImg,
   editAvatar,
-} from "../js/actions/authActions";
+} from "../../store/actions/authActions";
 
-import { getPostsByID } from "../js/actions/postActions";
+import { getPostsByID } from "../../store/actions/postActions";
 
-import Post from "./posts/Post";
-import ModalPost from "./ModalPost";
+import Post from "../posts/Post";
+import ModalPost from "../posts/ModalPost";
 import ModalImg from "./ModalImg";
-import "../css/profile.css";
+import "./css/profile.css";
 
 class Profile extends React.Component {
   state = {

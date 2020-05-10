@@ -11,13 +11,15 @@ module.exports = postController = {
       const searchRes = await User.findOne(_id);
       if (searchRes) {
         const searchResPost = await Post.find({ postedBy: _id }).populate({
-          path: "postedBy likedBy",
+          path: "postedBy likedBy comments.user",
           select: "name",
           model: User,
         });
+
         if (searchResPost) {
           for (let j = 0; j < searchResPost.length; j++) {
             const avatarsLikesImg = [];
+            const avatarsCommentsImg = [];
             const {
               _id,
               postedBy,
@@ -26,6 +28,7 @@ module.exports = postController = {
               text,
               date,
               likedBy,
+              comments,
             } = searchResPost[j];
             for (let k = 0; k < likedBy.length; k++) {
               const searchResImgProfile = await Imgprofile.findOne({
@@ -40,6 +43,24 @@ module.exports = postController = {
               else avatarsLikesImg.push(likedBy[k].name);
             }
 
+            //comments with img and name user
+            for (let k = 0; k < comments.length; k++) {
+              const { text, user, date } = comments[k];
+              const searchResImgProfile = await Imgprofile.findOne({
+                avatar: comments[k].user,
+              })
+                // .populate({ path: "avatar", select: "name", model: User })
+                .sort({
+                  createdAt: "desc",
+                });
+              avatarsCommentsImg.push({
+                avatarImg: searchResImgProfile,
+                name: user.name,
+                text,
+                date,
+              });
+              // console.log(avatarsCommentsImg);
+            }
             posts.push({
               _id,
               postedBy,
@@ -48,6 +69,7 @@ module.exports = postController = {
               text,
               date,
               likedBy,
+              comments: avatarsCommentsImg,
               avatarsLikesImg,
             });
           }
@@ -56,12 +78,14 @@ module.exports = postController = {
           const searchResPost = await Post.find({
             postedBy: searchRes.following[i]._id,
           }).populate({
-            path: "postedBy likedBy",
+            path: "postedBy likedBy comments.user",
             select: "name",
             model: User,
           });
           for (let j = 0; j < searchResPost.length; j++) {
             const avatarsLikesImg = [];
+            const avatarsCommentsImg = [];
+
             const {
               _id,
               postedBy,
@@ -70,6 +94,7 @@ module.exports = postController = {
               text,
               date,
               likedBy,
+              comments,
             } = searchResPost[j];
             for (let k = 0; k < likedBy.length; k++) {
               const searchResImgProfile = await Imgprofile.findOne({
@@ -83,7 +108,23 @@ module.exports = postController = {
                 avatarsLikesImg.push(searchResImgProfile);
               else avatarsLikesImg.push(likedBy[k].name);
             }
-
+            //comments with img
+            for (let k = 0; k < comments.length; k++) {
+              const { text, user, date } = comments[k];
+              const searchResImgProfile = await Imgprofile.findOne({
+                avatar: comments[k].user,
+              })
+                // .populate({ path: "avatar", select: "name", model: User })
+                .sort({
+                  createdAt: "desc",
+                });
+              avatarsCommentsImg.push({
+                avatarImg: searchResImgProfile,
+                name: user.name,
+                text,
+                date,
+              });
+            }
             posts.push({
               _id,
               postedBy,
@@ -92,6 +133,7 @@ module.exports = postController = {
               text,
               date,
               likedBy,
+              comments: avatarsCommentsImg,
               avatarsLikesImg,
             });
             // console.log(posts);
@@ -111,13 +153,14 @@ module.exports = postController = {
       const searchRes = await User.findOne({ _id: id });
       if (searchRes) {
         const searchResPost = await Post.find({ postedBy: id }).populate({
-          path: "postedBy likedBy",
+          path: "postedBy likedBy comments.user",
           select: "name",
           model: User,
         });
         if (searchResPost) {
           for (let j = 0; j < searchResPost.length; j++) {
             const avatarsLikesImg = [];
+            const avatarsCommentsImg = [];
             const {
               _id,
               postedBy,
@@ -126,6 +169,7 @@ module.exports = postController = {
               text,
               date,
               likedBy,
+              comments,
             } = searchResPost[j];
             for (let k = 0; k < likedBy.length; k++) {
               const searchResImgProfile = await Imgprofile.findOne({
@@ -139,7 +183,23 @@ module.exports = postController = {
                 avatarsLikesImg.push(searchResImgProfile);
               else avatarsLikesImg.push(likedBy[k].name);
             }
-
+            //comments with img
+            for (let k = 0; k < comments.length; k++) {
+              const { text, user, date } = comments[k];
+              const searchResImgProfile = await Imgprofile.findOne({
+                avatar: comments[k].user,
+              })
+                // .populate({ path: "avatar", select: "name", model: User })
+                .sort({
+                  createdAt: "desc",
+                });
+              avatarsCommentsImg.push({
+                avatarImg: searchResImgProfile,
+                name: user.name,
+                text,
+                date,
+              });
+            }
             posts.push({
               _id,
               postedBy,
@@ -148,6 +208,7 @@ module.exports = postController = {
               text,
               date,
               likedBy,
+              comments: avatarsCommentsImg,
               avatarsLikesImg,
             });
           }
@@ -333,5 +394,41 @@ module.exports = postController = {
       res.status(500).json({ errors: err });
     }
   },
-  addComment: async (req, res) => {},
+  addComment: async (req, res) => {
+    const { id } = req.params;
+    const { _id } = req.user;
+    const { text } = req.body;
+    try {
+      const searchRes = await Post.findOne({ _id: id }).populate({
+        path: "postedBy",
+        select: "name",
+        model: User,
+      });
+      searchRes.comments.push({ user: _id, text });
+
+      const updateResComments = await Post.findOneAndUpdate(
+        { _id: id },
+        { $set: { comments: searchRes.comments } },
+        { new: true }
+      );
+
+      const searchResImgProfile = await Imgprofile.findOne({
+        avatar: _id,
+      }).sort({
+        createdAt: "desc",
+      });
+
+      res.status(200).json({
+        idPost: id,
+        text,
+        name: searchRes.postedBy.name,
+        avatarImg: searchResImgProfile,
+        date:
+          updateResComments.comments[updateResComments.comments.length - 1]
+            .date,
+      });
+    } catch (err) {
+      res.status(500).json({ errors: err });
+    }
+  },
 };

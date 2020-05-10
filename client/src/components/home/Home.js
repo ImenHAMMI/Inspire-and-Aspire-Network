@@ -21,12 +21,12 @@ import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 // import MoreIcon from "@material-ui/icons/MoreVert";
 
-import { isAuthorized } from "../js/actions/authActions";
+import { isAuthorized } from "../../store/actions/authActions";
 
-import PostList from "./posts/PostList";
-import UserList from "./users/UserList";
-import ModalPost from "./ModalPost";
-import "../css/home.css";
+import PostList from "../posts/PostList";
+import UserList from "../users/UserList";
+import ModalPost from "../posts/ModalPost";
+import "./home.css";
 
 class Home extends React.Component {
   state = {

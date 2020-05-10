@@ -23,7 +23,7 @@ import {
   ADD_IMG,
   ADDIMG_SUCCESS,
   ADDIMG_FAIL,
-} from "../constants/action-types";
+} from "../constants";
 
 const initialState = {
   isLoading: false,

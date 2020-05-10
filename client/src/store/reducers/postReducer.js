@@ -20,7 +20,10 @@ import {
   GET_POSTS_BY_ID,
   GETPOSTSBYID_SUCCESS,
   GETPOSTSBYID_FAIL,
-} from "../constants/action-types";
+  ADD_COMMENT,
+  ADDCOMMENT_SUCCESS,
+  ADDCOMMENT_FAIL,
+} from "../constants";
 
 const initialState = {
   isLoading: false,
@@ -33,13 +36,12 @@ const postReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case ADD_POST:
       return { ...state, isLoading: true };
-    case ADDPOST_SUCCESS: {
+    case ADDPOST_SUCCESS:
       return {
         ...state,
         isLoading: false,
         posts: [payload].concat(state.posts),
       };
-    }
     case ADDPOST_FAIL:
       return { ...state, isLoading: false, errors: payload };
     case GET_POSTS:
@@ -102,7 +104,21 @@ const postReducer = (state = initialState, { type, payload }) => {
         ),
       };
     case EDITPOST_FAIL:
-      return { ...state, isLoading: false, errors: payload };
+      return { ...state, isLoadingPost: false, errors: payload };
+    case ADD_COMMENT:
+      return { ...state, isLoadingPost: true };
+    case ADDCOMMENT_SUCCESS:
+      return {
+        ...state,
+        isLoadingPost: false,
+        posts: state.posts.map((p) =>
+          p._id === payload.idPost
+            ? { ...p, comments: p.comments.concat(payload) }
+            : p
+        ),
+      };
+    case ADDCOMMENT_FAIL:
+      return { ...state, isLoadingPost: false, errors: payload };
 
     default:
       return state;

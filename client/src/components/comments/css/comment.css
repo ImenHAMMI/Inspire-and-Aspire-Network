@@ -1,0 +1,7 @@
+.Comment {
+  display: flex;
+  align-items: center;
+}
+.Comment p {
+  padding-left: 10px;
+}

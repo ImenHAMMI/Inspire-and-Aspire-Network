@@ -40,9 +40,9 @@ router.put("/likePost:id", isAuth(), postController.likePost);
 // @access  Private
 router.put("/unlikePost:id", isAuth(), postController.unLikePost);
 
-// @route   POST /post/getAvatarLikes/:id
-// @desc    Get Avatar Likes
+// @route   POST /post/addcomment/:id
+// @desc    Add comment
 // @access  Private
-// router.get("/getAvatarsLike:id", postController.getAvatarsLikePost);
+router.post("/addcomment:id", isAuth(), postController.addComment);
 
 module.exports = router;

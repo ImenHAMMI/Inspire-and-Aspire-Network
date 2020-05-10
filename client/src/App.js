@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import SignUp from "./components/SignUp";
-import SignIn from "./components/SignIn";
-import Profile from "./components/Profile";
-import Home from "./components/Home";
+import SignUp from "./components/sign/SignUp";
+import SignIn from "./components/sign/SignIn";
+import Profile from "./components/profile/Profile";
+import Home from "./components/home/Home";
 
 import "./App.css";
 

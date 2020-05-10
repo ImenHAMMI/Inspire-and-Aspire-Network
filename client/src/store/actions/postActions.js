@@ -21,7 +21,10 @@ import {
   GET_POSTS_BY_ID,
   GETPOSTSBYID_SUCCESS,
   GETPOSTSBYID_FAIL,
-} from "../constants/action-types";
+  ADD_COMMENT,
+  ADDCOMMENT_SUCCESS,
+  ADDCOMMENT_FAIL,
+} from "../constants";
 
 //get Posts By User
 export const getPosts = () => async (dispatch) => {
@@ -57,7 +60,7 @@ export const getPostsByID = (id) => async (dispatch) => {
   };
   try {
     const searchRes = await axios.get(`/posts${id}`, config);
-    console.log(searchRes);
+    // console.log(searchRes);
     dispatch({
       type: GETPOSTSBYID_SUCCESS,
       payload: searchRes.data,
@@ -174,13 +177,33 @@ export const unLikePost = (id) => async (dispatch) => {
   };
   try {
     const putRes = await axios.put(`/unlikePost${id}`, null, config);
-    // console.log(putRes);
     dispatch({
       type: UNLIKE_SUCCESS,
       payload: putRes.data,
     });
-    // getPosts();
   } catch (error) {
     dispatch({ type: UNLIKE_FAIL, payload: error.response.data.errors });
+  }
+};
+
+//Add Ccomment
+export const addComment = (id, comment) => async (dispatch) => {
+  dispatch({
+    type: ADD_COMMENT,
+  });
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+  try {
+    const putRes = await axios.post(`/addComment${id}`, comment, config);
+
+    dispatch({
+      type: ADDCOMMENT_SUCCESS,
+      payload: putRes.data,
+    });
+  } catch (error) {
+    dispatch({ type: ADDCOMMENT_FAIL, payload: error.response.data.errors });
   }
 };

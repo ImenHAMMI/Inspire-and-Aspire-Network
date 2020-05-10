@@ -23,6 +23,11 @@ export const GET_PROFILE = "GET_PROFILE";
 export const GETPROFILE_SUCCESS = "GETPROFILE_SUCCESS";
 export const GETPROFILE_FAIL = "GETPROFILE_FAIL";
 
+//Edit Profile
+export const EDIT_PROFILE = "EDIT_PROFILE";
+export const EDITPROFILE_SUCCESS = "EDITPROFILE_SUCCESS";
+export const EDITPROFILE_FAIL = "EDITPROFILE_FAIL";
+
 //Follow
 export const FOLLOW = "FOLLOW";
 export const FOLLOW_SUCCESS = "FOLLOW_SUCCESS";
@@ -62,6 +67,11 @@ export const LIKE_FAIL = "LIKE_FAIL";
 export const UNLIKE = "UNLIKE";
 export const UNLIKE_SUCCESS = "UNLIKE_SUCCESS";
 export const UNLIKE_FAIL = "UNLIKE_FAIL";
+
+//Add Comment
+export const ADD_COMMENT = "ADD_COMMENT";
+export const ADDCOMMENT_SUCCESS = "ADDCOMMENT_SUCCESS";
+export const ADDCOMMENT_FAIL = "ADDCOMMENT_FAIL";
 
 //add Img Profile
 export const ADD_IMG = "ADD_IMG";

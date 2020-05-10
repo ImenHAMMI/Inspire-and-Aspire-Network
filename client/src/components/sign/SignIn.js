@@ -13,8 +13,8 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TextField from "@material-ui/core/TextField";
 
-import { login } from "../js/actions/authActions";
-import "../css/signin.css";
+import { login } from "../../store/actions/authActions";
+import "./css/signin.css";
 
 class SignIn extends React.Component {
   state = {

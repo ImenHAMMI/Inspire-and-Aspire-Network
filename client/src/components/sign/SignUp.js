@@ -12,7 +12,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import TextField from "@material-ui/core/TextField";
 
-import { register } from "../js/actions/authActions";
+import { register } from "../../store/actions/authActions";
 // import "../css/signup.css";
 
 class SignUp extends React.Component {

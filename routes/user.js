@@ -20,7 +20,7 @@ router.post("/login", userController.login);
 //@access  Private
 router.get("/current", isAuth(), userController.current);
 
-// @route  GET user/current
+// @route  GET users
 // @desc   Return all users
 //@access  Private
 router.get("/users", isAuth(), userController.getAllUsers);
@@ -29,6 +29,11 @@ router.get("/users", isAuth(), userController.getAllUsers);
 // @desc   Return profile by id
 //@access  Private
 router.get("/profile:id", userController.getProfileByID);
+
+// @route  PUT user/profile:id
+// @desc   Edit Profile
+//@access  Private
+router.put("/editprofile:id", userController.editProfile);
 
 // @route  PUT user/profile:id
 // @desc   Add follow

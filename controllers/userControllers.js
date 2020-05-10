@@ -155,6 +155,20 @@ module.exports = userController = {
       res.status(500).json({ errors: err });
     }
   },
+  editProfile: async (req, res) => {
+    const { id } = req.params;
+    const { name, email } = req.body;
+    try {
+      const updateRes = await User.findOneAndUpdate(
+        { _id: id },
+        { $set: { name, email } },
+        { new: true }
+      );
+      return res.status(200).json(updateRes);
+    } catch (err) {
+      res.status(500).json({ errors: err });
+    }
+  },
   uploadImg: async (req, res) => {
     const { _id } = req.user;
     try {

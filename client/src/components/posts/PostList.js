@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import Post from "./Post";
-import { getPosts } from "../../js/actions/postActions";
+import { getPosts } from "../../store/actions/postActions";
 import "./css/postList.css";
 
 class PostList extends Component {
@@ -13,7 +13,7 @@ class PostList extends Component {
   }
   render() {
     const { posts, isLoading } = this.props;
-    // console.log(posts);
+    console.log(posts);
     return isLoading ? (
       <CircularProgress style={{ marginTop: "17%", marginLeft: "48%" }} />
     ) : (

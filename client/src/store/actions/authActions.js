@@ -24,7 +24,10 @@ import {
   EDIT_AVATAR,
   EDITAVATAR_SUCCESS,
   EDITAVATAR_FAIL,
-} from "../constants/action-types";
+  EDIT_PROFILE,
+  EDITPROFILE_SUCCESS,
+  EDITPROFILE_FAIL,
+} from "../constants";
 
 //REGISTER
 export const register = (user) => async (dispatch) => {
@@ -113,6 +116,31 @@ export const getProfileByID = (id) => async (dispatch) => {
     });
   } catch (error) {
     dispatch({ type: GETPROFILE_FAIL, payload: error.response.data.errors });
+  }
+};
+
+//Edit profile
+export const editProfile = (id, newData) => async (dispatch) => {
+  dispatch({
+    type: EDIT_PROFILE,
+  });
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+  try {
+    const updateRes = await axios.put(`/editprofile${id}`, newData, config);
+
+    dispatch({
+      type: EDITPROFILE_SUCCESS,
+      payload: updateRes.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: EDITPROFILE_FAIL,
+      payload: error.response.data.errors,
+    });
   }
 };
 

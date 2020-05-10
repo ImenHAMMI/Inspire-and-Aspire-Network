@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { getAllUsers } from "../../js/actions/authActions";
+import { getAllUsers } from "../../store/actions/authActions";
 
 import User from "./User";
 import "./css/userList.css";
